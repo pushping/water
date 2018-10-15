@@ -1,0 +1,81 @@
+{% extends "index.html" %}
+
+{% block content %}
+{% set privTree=[] %}
+{% for k,v in privileges %}
+    {% set arr=php_explode('/', v['accesskey'])%}
+    {% set privileges[k]['m']=arr[0] %}
+    {% if !privTree[arr[0]] %}
+        {% set privTree[arr[0]]=[] %}
+    {% endif %}
+    {% set privileges[k]['c']=arr[1]?arr[1]:'*' %}
+    {% set privileges[k]['a']=arr[2]?arr[2]:'*' %}
+{% endfor %}
+
+
+<form role="form" id="objform" method="post" action=""> 
+    {% for k,v in privileges %}
+    {% if v['c']=='*' and v['a']=='*' %}
+    <div class=" p-sm">  
+        <div class=" b-r-sm p-sm white-bg"> 
+            <table class="table table-hover">
+                <thead><tr><td colspan="2"><h4>{{ v['title']|default(v['m'])}}</h4></td></tr></thead>
+                <tbody>                
+                    {% for _k,_v in privileges %}
+                    {% if _v['c']!='*' and _v['a']=='*' and _v['m']==v['m'] %}
+                    <tr>
+                        <td>
+                            <span class="label label-primary">{{ _v['title']|default(_v['c'])}}</span>
+                        </td>
+                        <td class="i-checks">
+                            {% for __k,__v in privileges %}
+                            {% if __v['a']!='*' and _v['c']==__v['c'] and v['m']==__v['m'] %}
+                                <label class="p-w-xs">
+                                    <input type="checkbox" name="privilege[]" value="{{__v['id']}}" {%if php_in_array(__v['id'],oldAllowPrivilegeIds)%}checked="checked"{%endif%}/><i></i>{{ __v['title']|default(__v['a'])}}
+                                </label>
+                            {% endif %}
+                            {% endfor %} 
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>  
+    </div>          
+    {% endif %}
+    {% endfor %}
+    <div class="p-sm">
+        <div class=" b-r-sm p-sm white-bg">
+            <div class="row">
+            <div class="form-group pull-right m-r">
+                <button class="btn btn-white" type="reset">取消</button>
+                <button class="btn btn-primary" type="submit" name="dosubmit" value="submit">保存更改</button>
+            </div></div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+    {{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+    {{ javascript_include('js/jquery.form.js')}}
+    <script>
+        $(document).ready(function () {
+            $('#objform').ajaxForm({
+                dataType:'json',
+                success: function(res){
+                    console.log(res);
+                    if(res.status=='ok'){
+                        showBottomTip(res['message'], 'success'); 
+                    }else{
+                        showBottomTip(res['message'], 'error'); 
+                    }
+                }
+            });     
+        });
+    </script>
+{% endblock %}
+
+{% block header %}
+{% endblock %}

@@ -1,0 +1,50 @@
+.carousel {
+  background: #1a2539;
+  width: 350px;
+  padding: 20px;
+  text-align: center; }
+  .carousel li {
+    width: 100%;
+    height: 150px;
+    overflow: hidden; }
+    .carousel li img {
+      width: 100%;
+      height: 100%; }
+  .carousel .jcarousel-clip {
+    height: 650px;
+    overflow: hidden;
+    margin: 20px 0; }
+  .carousel li {
+    margin-bottom: 20px;
+    position: relative; }
+  .carousel .fa {
+    background: #232c49;
+    border-radius: 2px;
+    padding: 0px 15px;
+    text-align: center;
+    font-size: 30px;
+    color: #fff; }
+  .carousel .jcarousel-prev-disabled .fa,
+  .carousel .jcarousel-next-disabled .fa {
+    background: #666; }
+  .carousel .jcarousel-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: left;
+    padding: 10px; }
+
+.aside-right {
+  top: 0;
+  right: 0;
+  height: 100%; }
+
+.aside_box input {
+  border: none;
+  border-right: 1px solid #ddd; }
+
+.aside_box .input-group-addon {
+  border: none; }

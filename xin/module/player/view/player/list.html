@@ -1,0 +1,123 @@
+{% extends "index.html" %}
+{% block css %}
+
+{{ stylesheet_link('css/style.css') }}
+{{ stylesheet_link('css/my-style.css') }}
+{{ stylesheet_link('css/index.css') }}
+{{ stylesheet_link('css/reset.css') }}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+{{ stylesheet_link('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+
+{% endblock%}
+{% block style%}
+<style type="text/css">
+    .display {display:none}
+    #wrapper .sidebar-collapse{display:none}
+    .wrapper,.wrapper-content {padding:0px!important;margin: 0px!important}
+    #page-wrapper {margin-left:0px!important;padding:0px;min-height: auto!important;}
+
+     #jstree1 {font-size: 11px}
+    .jstree-open > .jstree-anchor > .fa-folder:before {content: "\f07c";}
+    .jstree-default .jstree-icon.none { width: 0;}
+    .jstree-default .jstree-open>.jstree-ocl {background-position: -35px -4px}
+    .jstree-default .jstree-closed>.jstree-ocl{background-position: 0 -4px}
+    .jstree-default .jstree-node {background-position: -366px -4px}
+
+    .map_compoent_modal .slimScrollDiv{height: 175px!important}
+    .map_compoent_modal .content{height: 175px!important}
+
+	.nav > li.active {background:unset;border:0}
+	.nav > li > a {font-weight: normal;color: #A7B1C2}
+    .group_checkbox {display:flex}
+    .BMap_pop>img {display: none}
+    .map_content_left {width:200px;float:left}
+    .map_label {float:left;}
+    .map_title {float:left;margin-left:10px}
+    .map_addr {float:left;margin-top:10px}
+    .map_content_right {float:right;width: 40px;color:#fff;height: 40px;text-align: center;line-height: 40px;border-radius: 4px;}
+    .icheckbox_square-green {width:15px!important;height:15px!important}
+    .icheckbox_square-green.checked {background-position: -50px -1px}
+    .layui-layer-shade {background-color:rgba(55, 55, 55, 0.6)!important}
+
+    .search {position:absolute;font-size:14px;right:5px;top:10px;color:#A7B1C2}
+    .search:hover {color:#108ee9;cursor:pointer}
+
+    .form-control,.select {font-size:12px; color: #000}
+
+    .block {width:60px;text-align: center}
+    .block .map_label{margin-top:8px;width:60px}
+    .slimScrollDiv {overflow: unset!important}
+    .row{
+        margin-right :0!important;;
+        margin-left: 0!important;
+    }
+</style>
+
+{% endblock %}
+{% block content %}
+<form action="">
+    <table class="table">
+        <tr>
+            <th>用户ID\用户名</th>
+            <th><input type="text" placeholder="请输入用户名或者ID" class="form-control" name="keyname" value="{{keyname}}" ></th>
+            <th>积分区间</th>
+            <th>
+                <input type="text" class="form-control" placeholder="请输入最小积分" name="min" value="{{min}}">
+            ~
+                <input type="text" class="form-control" placeholder="请输入最大积分" name="max" value="{{max}}">
+            </th>
+            <th>
+                <input type="hidden" name="_url" value="admin/player/list">
+                <input type="submit" class="btn btn-primary" value="查询">
+            </th>
+            <th>
+                <input type="input" class="btn btn-primary" onclick="toadd()" value="新增">
+            </th>
+        </tr>
+    </table>
+</form>
+<table class="table tb1">
+    <thead>
+    <tr>
+        <th>用户ID</th>
+        <th>用户昵称</th>
+        <th>用户积分</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in player %}
+    <tr>
+        <td>{{item['id']}}</td>
+        <td>{{item['name']}}</td>
+        <td>{{item['point']}}</td>
+        <td>
+            <a href="{{url('admin/player/detail',['id':item['id']])}}">查看详情</a><br>
+            <a href="{{url('admin/player/add',['id':item['id']])}}">编辑</a>
+        </td>
+    </tr>
+    {% endfor%}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="100%">
+            {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<script>
+    function toadd() {
+        window.location.href = "{{url('admin/player/add')}}";
+    }
+</script>
+{% endblock %}
+{% block javascript%}
+{{ javascript_include('js/tool.js')}}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+{{ javascript_include('js/plugins/iCheck/icheck.min.js')}}
+{{ javascript_include('js/vue.js')}}
+{{ javascript_include('js/index_map.js')}}
+{{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js')}}
+
+{% endblock%}

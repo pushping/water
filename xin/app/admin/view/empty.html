@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ conf('WEB_SITE_TITLE')}}</title>
+    {{ stylesheet_link('css/bootstrap.min.css') }}
+    {{ stylesheet_link('font-awesome/css/font-awesome.min.css') }}
+    {{ stylesheet_link('css/plugins/toastr/toastr.min.css') }}
+    {{ stylesheet_link('js/plugins/gritter/jquery.gritter.css') }}
+    {{ stylesheet_link('css/plugins/iCheck/custom.css') }}
+    {{ stylesheet_link('css/style.css') }}
+    {{ stylesheet_link('css/my-style.css') }}
+    {{ stylesheet_link('css/animate.css') }}
+    {% block header %}{% endblock%}
+    {% block css %}{% endblock%}
+	{% block style %}{% endblock%}
+</head>
+<body class="gray-bg animated fadeInRight">
+    {% block content %}{% endblock%}
+
+    {{ javascript_include('js/jquery-2.1.1.js')}}
+    {{ javascript_include('js/bootstrap.min.js') }}
+    {{ javascript_include('js/plugins/metisMenu/jquery.metisMenu.js') }}
+    {{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js') }}
+
+    {{ javascript_include('js/plugins/jquery-ui/jquery-ui.min.js') }}
+    {{ javascript_include('js/plugins/toastr/toastr.min.js') }}
+    {{ javascript_include('js/plugins/iCheck/icheck.min.js') }}
+    {{ javascript_include('js/plugins/layer/layer.js') }}
+
+    {{ javascript_include('js/inspinia.js')}}
+    {{ javascript_include('js/plugins/pace/pace.min.js')}}
+    {{ javascript_include('js/func.js')}}
+    {{ javascript_include('js/tool.js')}}
+    {{ javascript_include('js/getPageBar.js')}}
+    {{ javascript_include('js/show-tip.js')}}
+    {{ javascript_include('js/jquery.form.js')}}
+    {% block script %}{% endblock%}
+	{% block javascript %}{% endblock%}
+</body>
+</html>

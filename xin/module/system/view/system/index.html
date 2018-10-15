@@ -1,0 +1,268 @@
+{% extends "index.html" %}
+{% block style %}
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'partial/new_breadcrumb.html' %}
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-content radius-5">
+                <form method="post" action="index.php?_url=admin/system/update" class="form-horizontal" id="dataForm">
+                    <div class="form-group form-inline">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>网站名</label>
+                        <div class="col-xs-9">
+                            <input type="hidden" name="id" id="id" value="{{region.id}}">
+                            <input type="text" class="form-control" name="name" id="name" value="{{region.name}}" placeholder="请输入网站名">
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>区域名</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" name="area_name" id="area_name" value="{{region.root_area}}" {%if region.root_area %}readonly{% endif %} placeholder="请输入区域名">
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>顶级组织机构</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" name="org_name" id="org_name" value="{{region.root_org}}" {%if region.root_org %}readonly{% endif %}  placeholder="请输入组织名">
+                        </div>
+                    </div>
+                    {%if 0 %}
+                    <div class="form-group form-inline">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>管理员账号</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" name="account" id="1" value="{{region.admin_id}}" {%if region.admin_id %}readonly{% endif %} placeholder="请输入账号">
+                        </div>
+                        {%if !region.admin_id %}
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" name="passwd" id="2" placeholder="请输入密码">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" name="passwd2" id="3" placeholder="请再次输入密码">
+                        </div>
+                        {% endif %}
+                    </div>
+                    {%endif%}
+
+                    <div class="form-group form-inline">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>选择管理员账号</label>
+                        <div class="col-xs-9">
+                            <select name="account" id="account"  class="form-control" >
+                                {%for ad in adminList %}
+                                 <option value="{{ad['id']}}">{{ad['username']}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>上传Logo</label>
+                        <div class="col-xs-9">
+                            {%set isupload = 1%}
+                            {%set pics = logo %}
+                            <div class="uploader-setting" data-upimgmax="1" data-id-input-name="logoid" data-hash-input-name="logo">
+                                {% include "privilege/upload.html" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>上传背景图</label>
+                        <div class="col-sm-9">
+                            {%set isupload = 1%}
+                            {%set pics = indexbg %}
+                            <div class="uploader-setting"  data-upimgmax="1" data-id-input-name="indexbgid" data-hash-input-name="indexbg">
+                                {% include "privilege/upload.html" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 help-block"><span class="red">*</span>登录背景图</label>
+                        <div class="col-sm-9">
+                            {%set isupload = 1%}
+                            {%set pics = loginbg %}
+                            <div class="uploader-setting"  data-upimgmax="1" data-id-input-name="loginbgid" data-hash-input-name="loginbg">
+                             {% include "privilege/upload.html" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-9 col-xs-offset-2">
+                            <button type="button" class="btn btn-primary" onclick="submit_action()">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+{{ javascript_include('../plugins/webuploader/webuploader.js')}}
+{{ javascript_include('js/upload.js')}}
+{{ javascript_include('js/bootstrapValidator.min.js')}}
+{{ javascript_include('js/show-tip.js')}}
+<script type="text/javascript">
+
+    var submiting = false;
+    function submit_action(){
+        if(submiting) return;
+        submiting = true;
+        $("#dataForm").bootstrapValidator('validate');
+        if (!$("#dataForm").data('bootstrapValidator').isValid()) {
+            submiting = false;
+            return;
+        }
+        var area_name = $("#area_name").val();
+        if(area_name==''){
+            layer.alert('区域名称不能为空',{icon: 2});submiting = false;return;
+        }
+        var org_name = $("#org_name").val();
+        if(org_name==''){
+            layer.alert('组织机构名称不能为空',{icon: 2});submiting = false;return;
+        }
+        var account = $("#account").val();
+        if(account==''){
+            layer.alert('管理员不能为空',{icon: 2});submiting = false;return;
+        }
+        {%if 0 %}
+        var passwd = $("#passwd").val();
+        if(passwd==''){
+            layer.alert('密码不能为空',{icon: 2});submiting = false;return;
+        }
+        var passwd2 = $("#passwd2").val();
+        if(passwd2=='' ){
+            layer.alert('密码不能为空',{icon: 2});submiting = false;return;
+        }
+        if(passwd2==passwd ){
+            layer.alert('两次密码不一致',{icon: 2});submiting = false;return;
+        }
+        {%endif %}
+
+        if ($("#dataForm").data('bootstrapValidator').isValid()) {
+            submiting = true ;
+            var lyl = layer.load(5);
+            $.ajax({
+                url:"{{u('admin/system/update')}}",
+                data: $("#dataForm").serialize(),
+                type:"POST",
+                dataType:"JSON",
+                success:function (res) {
+                    console.log(res);
+                    layer.closeAll();
+                    layer.msg(res.msg);
+                    if(res.code=="200"){
+                        window.location.href = "{{u('admin/system/list')}}";
+                    }else{
+                        submiting = false;
+                    }
+                }
+            });
+        }else{
+            submiting = false ;
+        }
+    }
+
+    $(function () {
+        $("#dataForm").bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                area_name: {
+                    message: '区域名称验证失败!',
+                    validators: {
+                        notEmpty: {
+                            message: '区域名称不能为空!'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 25,
+                            message: '区域名称长度不能超过25!'
+                        },
+                        regexp: {
+                            regexp: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+                            message: '区域名称只能输入中文，英文字母和数字及_'
+                        }
+                    }
+                },
+                org_name: {
+                    message: '组织机构名称验证失败!',
+                    validators: {
+                        notEmpty: {
+                            message: '组织机构名称不能为空!'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 25,
+                            message: '组织机构名称长度不能超过25!'
+                        },
+                        regexp: {
+                            regexp: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+                            message: '组织机构名称只能输入中文，英文字母和数字及_'
+                        }
+                    }
+                },
+                account : {
+                    message: '账号验证失败!',
+                    validators: {
+                        notEmpty: {
+                            message: '账号不能为空!'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 25,
+                            message: '账号长度不能超过25!'
+                        },
+                        regexp: {
+                            regexp: /^[_a-zA-Z0-9]+$/,
+                            message: '账号只能输入英文字母和数字及_'
+                        }
+                    }
+                },
+                passwd : {
+                    message: '密码验证失败!',
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空!'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 15,
+                            message: '密码长度不能超过15!'
+                        },
+                        regexp: {
+                            regexp: /^[_a-zA-Z0-9]+$/,
+                            message: '密码只能输入英文字母和数字及_'
+                        }
+                    }
+                },
+                passwd2 : {
+                    message: '密码验证失败!',
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空!'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 15,
+                            message: '密码长度不能超过15!'
+                        },
+                        regexp: {
+                            regexp: /^[_a-zA-Z0-9]+$/,
+                            message: '密码只能输入英文字母和数字及_'
+                        }
+                    }
+                },
+            }
+        });
+    });
+</script>
+{% endblock%}

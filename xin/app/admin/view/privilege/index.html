@@ -1,0 +1,181 @@
+{% extends "empty.html" %}
+
+{% block content %}
+<div class="full-content-box white-bg">
+    <div class="col-md-4 col-lg-4 col-sm-5 col-xs-5" style=" height: 100%;float: right;">
+        <div class="full-height-scroll"> 
+            <form role="form" id="objform" method="post" action="{{u('admin/privilege/create',["_format":"json"])}}"> 
+                <h4 class="h4">${formtitle}
+                    <a v-if="oid>0" href="javascript:void(0)" onclick="del()" class="pull-right text-muted"><i class="fa fa-trash"></i></a>
+                </h4>
+                <hr/>   
+                <input type="hidden" name="id" :value="oid"  v-model="oid" />
+                <div class="form-group">
+                    <label class="control-label">权限标识</label>                                
+                    <input type="text" name="accesskey" placeholder="格式如app/[module/]controller/action" class="form-control" :value="accesskey"> 
+                </div>
+                <div class="form-group">
+                    <label class="control-label">标注</label> 
+                    <input type="text" name="title" placeholder="对该项的文字描述" class="form-control" :value="title">
+                </div>
+                <div class="form-group">
+                    <div class="i-checks">
+                        <label v-for="(g,index) in groups"> 
+                            <input type="radio" :value="index" name="grouptype" :checked="index=='{{group}}'?'checked':''" ><i></i>${g} 
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-white" type="reset">取消</button>
+                    <button class="btn btn-primary" type="submit">保存更改</button>
+                </div>
+                <div class="border-top p-sm hidden-xs" style="position:absolute;bottom:0px;right:0px;width:100%;text-align:right">
+                    <!--<button type="button" class="btn btn-w-m btn-default" onclick="">代码重载</button>--> 
+                    <button type="button" class="btn btn-w-m btn-info" onclick="addNew()">新增</button> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="full-height">
+            <div style="padding:10px;text-align:left">
+                <div class="btn-group">
+                    {% for k,v in groups %}
+                    <a href="{{u('admin/privilege/index',["group":k])}}" class="btn {%if group==k%}btn-primary{%else%}btn-white{%endif%}">{{v}}</a>                        
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% for k,v in privileges %}
+            {% set arr=php_explode('/', v['accesskey'])%}
+            {% set privileges[k]['m']=arr[0] %}
+            {% set privileges[k]['c']=arr[1]?arr[1]:'*' %}
+            {% set privileges[k]['a']=arr[2]?arr[2]:'*' %}
+            {% endfor %}
+            <div id="jstree1" style="padding:0px 10px;font-size:14px;">
+                    <ul>                        
+                        {% for k,v in privileges %}
+                        {% if v['c']=='*' and v['a']=='*' %}
+                        <li class="jstree-open" data-jstree='{"id":"{{v['id']}}"}'>
+                            <span data-pk="{{v['id']}}" title="{{v['c']}}">{{ v['title']|default(v['m'])}}</span>
+                            <ul>
+                                {% for _k,_v in privileges %}
+                                {% if _v['c']!='*' and _v['a']=='*' and _v['m']==v['m'] %}                                
+                                <li class="clearfix" data-jstree='{"id":"{{_v['id']}}"}'>
+                                    <span title="{{_v['m']}}">{{ _v['title']|default(_v['c'])}}</span>
+                                    <ul>
+                                        {% for __k,__v in privileges %}
+                                        {% if __v['a']!='*' and _v['c']==__v['c'] and v['m']==__v['m'] %}
+                                        <li data-jstree='{"type":"data","id":"{{__v['id']}}"}'>
+                                            <span title="{{__v['a']}}">{{ __v['title']|default(__v['a'])}}</span>
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>                                    
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+
+    <script>
+        var groups={{groups|json_encode}};
+        var objform = new Vue({
+            delimiters: ['${', '}'],
+            el: '#objform',
+            data: {
+                oid:0,
+                title: '',
+                accesskey:'',
+                group:'{{group}}',
+                formtitle:'新增',
+                groups:groups
+            },
+            watch: {
+                "oid":  function (val, oldVal) {
+                    console.log(val);
+                    if(val<1){
+                        $('#objform').attr("action","{{u('admin/privilege/create',["_format":"json"])}}" );
+                        $('#objform').find('input[name=accesskey]').attr('disabled',false);
+                        objform.formtitle='新增';
+                    }else{
+                        $('#objform').attr("action","{{u('admin/privilege/edit',["_format":"json"])}}" );
+                        $('#objform').find('input[name=accesskey]').attr('disabled','disabled');
+                    }
+                }
+            }
+        })
+        $(document).ready(function () {
+            $('#jstree1').jstree({
+                'core': { 'check_callback': true },
+                'plugins': ['types'],
+                'types': {
+                    'default': { 'icon': 'fa fa-folder' },
+                    'data': { 'icon': 'fa fa-file-code-o' }
+                }
+            });
+            $('#jstree1').bind("activate_node.jstree", function (obj, e) {
+                var id = parseInt(e.node.data.jstree.id);
+                if (id < 1) return;
+                $.getJSON(repUrl("{{u('admin/privilege/edit',['id':'__id__','_format':'json'])}}", { "id": id }), function (res) {
+                    if (res == null) { showBottomTip('信息获取失败', 'error'); }
+                    else if (res['status'] == 'ok') {
+                        console.log(res);
+                        objform.accesskey = res.data.objData.accesskey;
+                        objform.title = res.data.objData.title;
+                        objform.oid = res.data.objData.id;
+                        objform.formtitle='[编辑]'+res.data.objData.title;
+                        $('#objform').find("input:radio[name=grouptype][value="+res.data.objData.grouptype+"]").iCheck('check');
+                    }
+                    else { showBottomTip(res['message'], 'warning'); }
+                });
+            });
+            $('.full-height').slimScroll({'height':'auto'});                
+            $('#objform').ajaxForm({
+                dataType:'json',
+                beforeSubmit:function(){$('#objform').find('button[type=submit]').attr('disabled','disabled')},
+                success: function(res){
+                    console.log(res);
+                    if(res.status=='ok'){
+                        location.reload();
+                    }else{
+                        showBottomTip(res['message'], 'error'); 
+                    }
+                }
+            });       
+
+        });
+        function addNew(){
+            objform.accesskey = '';
+            objform.title = '';
+            objform.oid = 0;
+            $('input[name=accesskey]').focus();
+        }
+        function del(){            
+            var id = parseInt($('#objform').find('input[name=id]').val());
+            if (id < 1) return;
+            ajaxDeleteData("{{u('admin/privilege/delete',['_format':'json'])}}",{"id":id},function(){
+                location.reload();
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block header %}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+<style>
+    #jstree1 .jstree-leaf{float: left;}
+</style>
+{% endblock %}

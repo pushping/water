@@ -1,0 +1,228 @@
+{% extends "empty.html" %}
+{% block css %}
+{{ stylesheet_link('css/reset.css') }}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+{{ stylesheet_link('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+
+{% endblock%}
+{% block style%}
+<style type="text/css">
+    #wrapper .sidebar-collapse{display:none}
+    .wrapper,.wrapper-content {padding:0px}
+    #page-wrapper {margin-left:0px!important;padding:0px;}
+
+     #jstree1 {font-size: 11px}
+    .jstree-open > .jstree-anchor > .fa-folder:before {content: "\f07c";}
+    .jstree-default .jstree-icon.none { width: 0;}
+    .jstree-default .jstree-open>.jstree-ocl {background-position: -35px -4px}
+    .jstree-default .jstree-closed>.jstree-ocl{background-position: 0 -4px}
+    .jstree-default .jstree-node {background-position: -366px -4px}
+
+    .map_compoent_modal .slimScrollDiv{height: 175px!important}
+    .map_compoent_modal .content{height: 175px!important}
+
+	.nav > li.active {background:none;border:0}
+	.nav > li > a {font-weight: normal;color: #A7B1C2}
+    .group_checkbox {display:flex}
+    .BMap_pop>img {display: none}
+    .map_content_left {width:200px;float:left}
+    .map_label {float:left;}
+    .map_title {float:left;margin-left:10px}
+    .map_addr {float:left;margin-top:10px}
+    .map_content_right {float:right;width: 40px;color:#fff;height: 40px;text-align: center;line-height: 40px;border-radius: 4px;}
+    .icheckbox_square-green {width:15px!important;height:15px!important}
+    .icheckbox_square-green.checked {background-position: -50px -1px}
+    .layui-layer-shade {background-color:rgba(55, 55, 55, 0.6)!important}
+
+    .search {position:absolute;font-size:14px;right:5px;top:10px;color:#A7B1C2}
+    .search:hover {color:#108ee9;cursor:pointer}
+
+    .form-control,.select {font-size:12px; color: #000}
+    /*iframe*/
+    .map_dev_search {top:0px}
+    .new_top {top:20px}
+    .map_dev_list {min-width: 170px}
+    .search_left  {left:190px}
+   
+</style>
+{% endblock %}
+{% block content %}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9Mmf1Qqx0h9HPWbzPjxHDPw8GfKW6kxG"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+<div id="map_centent" class="all">
+        <div id="allmap" style="width: 100%;height:100%"></div>
+        <div class="map_screen map_compoent_modal new_top" onclick="showhide('screen_position')">
+            <button class="btn btn-primary dim" type="button"><i class="fa fa-list-alt"></i></button>
+        </div>
+
+        <!-- <div class="map_all_status map_compoent_modal">
+            <div class="col-sm-12 group_checkbox">
+                    <div class="i-checks" id="all"><label class="checkbox-inline"> <input type="checkbox" value="0" checked="">  全部 </label></div>
+                    <div class="i-checks ids"><label class="checkbox-inline"> <input type="checkbox" value="1" checked="">  正常 </label></div>
+                    <div class="i-checks ids"><label class="checkbox-inline"> <input type="checkbox" value="5" checked="">  待布防 </label></div>
+                    <div class="i-checks ids"><label class="checkbox-inline"> <input type="checkbox" value="2" checked="">  告警 </label></div>
+                    <div class="i-checks ids"><label class="checkbox-inline"> <input type="checkbox" value="3" checked="">  失联 </label></div>
+            </div>
+        </div> -->
+
+        <!--map right-->
+        <!-- <div class="map_alarm map_compoent_modal">
+            <button class="btn btn-primary dim" type="button">告警分布</button>
+        </div> -->
+        <div class="map_deviceview map_compoent_modal new_top" onclick="showhide('devdetail')">
+                <button class="btn btn-primary dim " type="button"><i class="fa fa-th"></i></button>
+        </div>
+        <!-- <div class="map_devicedetail map_compoent_modal">
+            <button class="btn btn-primary dim" type="button"><i class="fa fa-tasks"></i></button>
+        </div> -->
+        <div class="map_compoent_modal_position new_top map_compoent_modal devdetail anchorBL" >
+            <iframe id="devdetail" src="{{u('admin/index/devdetail')}}"  name="devdetail" style="height: 100%;width:100%;border:none;background:white" scrolling="no"></iframe>
+        </div>
+
+
+        <!-- <div class="small-chat-box fadeInRight animated map_compoent_modal search_position active ">
+            <div class="input-group" data-autoclose="true">
+                    <input type="text" class="form-control" value="" placeholder="筛选区域">
+                    <span class="input-group-addon">
+                        <span class="fa fa-search"></span>
+                    </span>
+            </div>
+        </div> -->
+
+        <div class="small-chat-box new_top fadeInRight animated map_compoent_modal screen_position active  area">
+                <!-- <div class="map_dev_area" data-autoclose="true">
+                    <div class="map_compoent_modal_head" draggable="true">
+                        <div class="title"><i class="fa fa-map-marker"></i><span>区域选择</span></div>
+                        <div class="inline-block pull-right">
+                            <i class="fa fa-home"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div id="jstree1"></div>
+                    </div>
+                </div> -->
+                <div class="map_dev_list" >
+                    <div class="map_compoent_modal_head" draggable="true">
+                        <div class="title"><i class="fa fa-map-marker"></i><span>设备列表</span></div>
+                        <div class="inline-block pull-right">
+                            <i class="fa fa-angle-double-right"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <ul class="map-dev-menu-container">
+                            {%for i,o in type_map_list%}
+                            <li class="map-dev-menu-item">
+                                <div class="inline-block dev-menu-mes">
+                                    <i class="fa fa-th-large"></i>
+                                    <span class="text">{{i}}</span>
+                                    <span class="text">（{{o['count']}}）</span>
+                                    <input type="hidden" name="device_type" value="{{o['device_type']}}"/>
+                                </div>
+                                {%for k,item in o%}
+                                    {%if k !=="count" and k!=="device_type"%}
+                                    <div class="inline-block text-overflow dpnone">
+                                        <span  class="text lost" title="0">{%if item==NULL%}0{%else%}{{item}}{%endif%}</span>
+                                    </div>
+                                    {%endif%}
+                                {%endfor%}
+                            </li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="map_dev_search dpnone search_left" id="map_dev_search">
+                    <div class="map_compoent_modal_head" style="display:flex" draggable="true">
+                        <div class="map_dev_search_type">
+                                <select name="dev_type" class="form-control select" @change="get_deviceid_map()" v-model="status">
+                                    <option value="" selected>全部状态</option>
+                                    <option v-for="o in data_status" :value="o['val']">${o['title']}</option>
+                                </select>
+                        </div>
+                        <div class="map_dev_search_id input-group" >
+                            <input type="text" v-model="device_server_id" placeholder="资产编号"  />
+                                <span class="fa fa-search search" @click="get_server_map()"></span>
+                        </div>
+                    </div>
+                    <div class="content" >
+                        <ul class="map-dev-menu-container"  id="dev_list_content">
+                            <li class="map-dev-menu-item dev-search-list">
+                                    <div class="inline-block title">
+                                        <span class="text status">状态</span>
+                                        <span class="text dev_id">资产编号</span>
+                                    </div>
+                            </li>
+
+                            <li v-for="item in data_list"  class="map-dev-menu-item"  @click="get_deviceid_map(item['did'])">
+                                <div class="inline-block rows" >
+                                    <span class="text status map_state_cir" :class="item['css']">●</span>
+                                    <span class="text dev_id" >${item['device_server_id']}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+</div>
+{% endblock %}
+{% block javascript%}
+{{ javascript_include('js/tool.js')}}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+{{ javascript_include('js/plugins/iCheck/icheck.min.js')}}
+{{ javascript_include('js/vue.js')}}
+{{ javascript_include('js/index_map_2.js')}}
+{{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js')}}
+
+
+<script type="text/javascript">
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+    var images = {};
+    function showphotos(){
+        var photos = {
+                "title": "", //相册标题
+                "id": 123, //相册id
+                "start": 0, //初始显示的图片序号，默认0
+                "data": [   //相册包含的图片，数组格式
+                ]
+        };
+        $.each(images,function(i,o){
+            photos.data.push({
+                    "alt": o.title,
+                    "pid": i, //图片id
+                    "src": "./uploads/"+o.path, //原图地址
+                    "thumb": "" //缩略图地址
+            })
+        })
+        layer.photos({
+            photos: photos
+            ,anim: 5
+        })
+    }
+    function detailWarning(id){
+        var area = ['700px', '488px'];
+        var btn = ['关闭'];
+        dialogSizeTip('{{u("admin/alarm/detail")}}&id='+id,'查看告警信息', area, btn);
+    }
+    function resultWarning(id){
+        var area = ['700px', '522px'];
+        var btn = ['关闭'];
+        dialogSizeTip('{{u("admin/order/todo")}}&id='+id,'工单处理信息', area, btn);
+    }
+
+    function showhide(obj){
+        var _this = $("."+obj);
+        if(_this.hasClass('anchorBL')){
+            _this.removeClass("anchorBL");
+        }else{
+             _this.addClass("anchorBL");
+        }
+    }
+
+
+</script>
+{% endblock%}

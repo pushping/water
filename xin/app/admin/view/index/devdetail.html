@@ -1,0 +1,205 @@
+{% extends "empty.html" %}
+{% block css%}
+<style>
+    .tabs-container ul {display:flex}
+    .nav > li.active {background:none;border:0}
+    .nav > li > a {font-weight: normal;color: hsla(0,0%,100%,.67)}
+    .width170 {width:200px}
+    .map_compoent_modal_position .content  .tab_item_content ul li .info{width: calc(100% - 75px);overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+    .image {position: absolute;top:0;right: 0;box-shadow: 2px 3px 1px rgba(0,0,0,.2);}
+    .tab_item_content {position: relative;}
+    .thumb {width:125px;height:117px;}
+    #ibox-content {padding:0px}
+    .vertical-container {margin:0px;width:100%}
+    .tab_dev_history {height:100%}
+    .img_align {    display: flex;justify-content: center;align-items: center;height: 405px;}
+</style>
+{% endblock%}
+{% block content %}
+{{ stylesheet_link('css/reset.css') }}
+<div class="small-chat-box fadeInRight animated map_compoent_modal map_compoent_modal_position active " style="top:0px;right:0px">
+        <div class="heading">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab_dev_info">设备信息</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab_dev_history">告警记录</a></li>
+                    <!-- <li class=""><a data-toggle="tab" href="#tab_dev_action">操作记录</a></li> -->
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content content">
+            {%if device%}
+            <div id="tab_dev_info" class="tab-pane active">
+                <div class="tab_item">
+                    <div  style="height:23px">
+                    <div class="tab_item_title">
+                        基础信息
+                    </div>
+                    <div class="line"></div>
+                    <div class="tab_item_subtitle">
+                        <!--更多-->
+                    </div>
+                    </div>
+                    <div class="tab_item_content space0">
+                        <ul class="space0">
+                            <li class="flex width170" >
+                                <label>设备类型</label>
+                                <div class="info">{{device['device_type']}}</div>
+                            </li>
+                            <li class="flex width170">
+                                <label>资产编号</label>
+                                <div class="info">{{php_substr(device['device_server_id'],0,14)}}</div>
+                            </li>
+                            {%if php_strlen(device['device_server_id'])>14%}
+                            <li class="flex width170">
+                                    <label></label>
+                                <div class="info">{{php_substr(device['device_server_id'],14)}}</div>
+                            </li>
+                            {%endif%}
+
+                            <li class="flex width170">
+                                <label>设备状态</label>
+                                <div class="info">{{devStatusText(device['status'])}}</div>
+                            </li>
+                            <li class="flex width170">
+                                <label>管理单位 </label>
+                                <div class="info">{{php_mb_substr(areatoArray(device['organization'],'organization'),0,14,"utf-8")}}</div>
+                            </li>
+                            {%if php_strlen(areatoArray(device['organization'],'organization'))>14%}
+                            <li class="flex width170">
+                                <div class="info">{{php_mb_substr(areatoArray(device['organization'],'organization'),14,"utf-8")}}</div>
+                            </li>
+                            {%endif%}
+
+
+                            <li class="flex">
+                                <label>详细地址</label>
+                                <div class="info">{{php_mb_substr(device['device_install_address'],0,60,"utf-8")}}</div>
+                            </li>
+                            
+                            {%if php_strlen(device['device_install_address'])>60%}
+                            <li class="flex width170">
+                                <div class="info">{{php_mb_substr(device['device_install_address'],60,"utf-8")}}</div>
+                            </li>
+                            {%endif%}
+                            <div class="image">
+                                {%if images%}
+                                <img class="thumb" src="./uploads/{{images[0]['path']}}">
+                                {%endif%}
+                            </div>
+                        </ul>
+                    </div>
+                    {%if alarm%}
+                    <div class="alarm_data">
+                            <div class="tab_item_title">
+                                数据信息
+                            </div>
+                            <div class="line"></div>
+                            <div class="tab_item_subtitle">
+                                <!--更多-->
+                            </div>
+                            <div class="tab_item_content space0">
+                                <ul class="space0" style="padding-top:24px!important">
+                                    <li class="flex" >
+                                        <label>sn号:</label>
+                                        <div class="info">{{device['did']}}</div>
+                                    </li>
+                                    <li class="flex">
+                                        <label>心跳时间:</label>
+                                        <div class="info">{{time(alarm['record_time'])}}</div>
+                                    </li>
+                                </ul>
+                                    <style>
+                                        .data_list {margin-top: 20px}
+                                        .emot {background-color:#f7f7f7;padding:5px;}
+                                        .emot span {margin:0 2px}
+                                        .emot .unit {color:#23c6c8}
+                                        .col-sm-6 {width:50%;float:left;padding:0 5px}
+                                    </style>
+                                    <div class="data_list row">
+                                        {%for item in alarmData%}
+                                        <div class="col-sm-12 m-b-sm">
+                                            <div class="emot">
+                                                <span class="label">
+                                                    <i class="fa fa-circle-o btn-info"></i>
+                                                </span>
+                                                <span>
+                                                    {{item['name']}}
+                                                </span>
+                                                <span class="unit">
+                                                    {{item['device_data']}}{{item['unit']}}
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        {%endfor%}
+                                    </div>
+                            </div>
+                    </div>
+                    {%else%}
+                    {%endif%}
+                </div>
+            </div>
+    
+            <div id="tab_dev_history" class="tab-pane">
+                    <div class="tab_item">
+                        {%if alarm%}
+                        <div  style="height:23px">
+                        <div class="tab_item_title">
+                            实时告警
+                        </div>
+                        <div class="line"></div>
+                        </div>
+                        <div class="tab_item_content space0">
+                            <ul class="space0">
+                                <div class="ibox-content" id="ibox-content">
+                                    <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+                                        <div class="vertical-timeline-block">
+                                            <div class="vertical-timeline-icon navy-bg">
+                                                <i class="fa fa-bell"></i>
+                                            </div>
+            
+                                            <div class="vertical-timeline-content">
+                                                <div class="alarm_info">
+                                                    {{time(alarm['record_time'])}}
+                                                    {{alarm['name']}}
+                                                </div>
+                                                    <button class="btn  btn-outline btn-default" onclick="parent.resultWarning({{alarm['id']}})">工单</button>
+                                                    <button class="btn  btn-outline btn-default" onclick="parent.detailWarning({{alarm['id']}})">详情</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                        {%else%}
+                        <div class="cavn img_align">
+                            <img src="./admin/img/infocontent.png">
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+                {%else%}
+                    请在地图上选择设备
+                {%endif%}
+        </div>
+    </div>
+    {% endblock %}
+{% block javascript %}
+{{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js')}}
+<script>
+    var images = {%if images %}{{images|json_encode}}{%else%}[]{%endif%};
+    
+
+    $('#vertical-timeline').toggleClass('center-orientation');
+
+    $(".image").click(function(){
+        parent.window.images = images;
+        parent.window.showphotos();
+    })
+    $(".tab-content").slimScroll({ height: '445px' });
+
+
+</script>
+{% endblock%}
+    

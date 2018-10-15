@@ -1,0 +1,414 @@
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " ";
+}
+.clearfix:after {
+  clear: both;
+}
+.p_con {
+  width: 870px;
+  position: relative;
+  display: inline-block;
+}
+.p_con .peo_num {
+  width: 100%;
+  height: 60px;
+  text-align: center;
+  margin: 0 auto;
+  margin: 10px 0;
+}
+.p_con .peo_num span {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  bottom: 15px;
+}
+.p_con .peo_num ul {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+.p_con .peo_num ul li {
+  list-style: none;
+  float: left;
+  background: #244784;
+  border-radius: 5px;
+  font-size: 30px;
+  padding: 1px 3px;
+  color: #fff;
+  margin-right: 5px;
+  transform: scale(0.9);
+}
+.p_con .tab_chart {
+  width: 100%;
+  margin: 0 auto;
+}
+.p_con .tab_chart .wraper {
+  width: 100%;
+  position: relative;
+}
+.p_con .tab_chart .wraper h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+.p_con .tab_chart .wraper .wraper_ul {
+  margin: 0;
+  padding: 15px;
+  box-sizing: border-box;
+  position: relative;
+}
+.p_con .tab_chart .wraper .wraper_ul ul {
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_ul ul li {
+  width: 15%;
+  margin: 1% 0.75%;
+  height: 40px;
+  background: #fff;
+  box-sizing: border-box;
+  float: left;
+  list-style: none;
+  font-size: 20px;
+  border: 2px solid #666;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  cursor: pointer;
+}
+.p_con .tab_chart .wraper .wraper_ul ul li.active {
+  background: #fff;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_left {
+  position: absolute;
+  left: 0;
+  bottom: 35%;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_right {
+  position: absolute;
+  right:10px;
+  bottom: 35%;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list {
+  position: absolute;
+  width: 100px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  background: #919eb6;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list span.active {
+  background: #fff;
+}
+.p_con .tab_chart .wraper .wraper_cont {
+  width: 100%;
+  height: 670px;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont {
+  position: relative;
+  width: 100%;
+  height: 670px;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .myChart {
+  width: 100%;
+  height: 50%;
+  z-index: 1000;
+  position: relative;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box {
+  width: 100%;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .myChart {
+  height: 335px;
+  width: 50%;
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 {
+  width: 50%;
+  height: 335px;
+  padding: 20px;
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 .myChart {
+  height: 295px;
+  width: 395px;
+  
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 p {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+.wraper_bj{
+  height: 670px;
+  width: 870px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bj_ul{
+  width:100%;
+  height: 100%;
+}
+.bj_ul li{
+  height: 100%;
+  width: 100%;
+  display: none;
+  position: relative;
+}
+.bj_ul li.active{
+  display: block;
+}
+.bj_ul li img{
+  display: block;
+  height: 34px;
+  width: 30px;
+  position: absolute;
+  z-index: 500;
+  cursor: pointer;
+}
+.chart2,
+.chart3 {
+  padding-top: 10px;
+}
+.imgSize {
+  width: 100%;
+  height: 100%;
+}
+* {
+  font-family: 'Microsoft YaHei';
+}
+html {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  padding: 0;
+  margin: 0 auto;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " ";
+}
+.clearfix:after {
+  clear: both;
+}
+.p_con {
+  width: 870px;
+  position: relative;
+  display: inline-block;
+}
+.p_con .peo_num {
+  width: 100%;
+  height: 60px;
+  text-align: center;
+  margin: 0 auto;
+  margin: 10px 0;
+}
+.p_con .peo_num span {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  bottom: 15px;
+}
+.p_con .peo_num ul {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+.p_con .peo_num ul li {
+  list-style: none;
+  float: left;
+  background: #244784;
+  border-radius: 5px;
+  font-size: 30px;
+  padding: 1px 3px;
+  color: #fff;
+  margin-right: 5px;
+  transform: scale(0.9);
+}
+.p_con .tab_chart {
+  width: 100%;
+  margin: 0 auto;
+}
+.p_con .tab_chart .wraper {
+  width: 100%;
+  position: relative;
+}
+.p_con .tab_chart .wraper h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+.p_con .tab_chart .wraper .wraper_ul {
+  margin: 0;
+  padding: 15px;
+  box-sizing: border-box;
+  position: relative;
+}
+.p_con .tab_chart .wraper .wraper_ul ul {
+  padding: 0;
+  margin: 10px 20px;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_ul ul li {
+    width: 120px;
+    height: 40px;
+    border: 1px #6d9ae1 solid;
+    -webkit-box-shadow: 0 0 12px #6d9ae1;
+    box-shadow: 0 0 5px #6d9ae1;
+    margin-bottom: 20px;
+    background-color: #f6f6f6;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #6d9ae1;
+    transition: all .1s ease-in-out;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.p_con .tab_chart .wraper .wraper_ul ul li.active {
+    background-color: #6d9ae1;
+    color: #fff;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_left {
+  position: absolute;
+  left: 0;
+  bottom: 46%;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_right {
+  position: absolute;
+  right:10px;
+  bottom: 46%;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list {
+  position: absolute;
+  width: 100px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  background: #919eb6;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.p_con .tab_chart .wraper .wraper_ul .turn_list span.active {
+  background: #fff;
+}
+.p_con .tab_chart .wraper .wraper_cont {
+  width: 100%;
+  height: 670px;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont {
+  position: relative;
+  width: 100%;
+  height: 670px;
+  display: none;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .myChart {
+  width: 100%;
+  height: 50%;
+  z-index: 1000;
+  position: relative;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box {
+  width: 100%;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .myChart {
+  height: 335px;
+  width: 50%;
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 {
+  width: 50%;
+  height: 335px;
+  padding: 20px;
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 .myChart {
+  height: 295px;
+  width: 395px;
+  
+  float: left;
+}
+.p_con .tab_chart .wraper .wraper_cont div.cont .chart_box .block1 p {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+.wraper_bj{
+  height: 670px;
+  width: 870px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bj_ul{
+  width:100%;
+  height: 100%;
+}
+.bj_ul li{
+  height: 100%;
+  width: 100%;
+  display: none;
+  position: relative;
+}
+.bj_ul li.active{
+  display: block;
+}
+.bj_ul li img{
+  display: block;
+  height: 34px;
+  width: 30px;
+  position: absolute;
+  z-index: 500;
+  cursor: pointer;
+}
+.chart2,
+.chart3 {
+  padding-top: 10px;
+}
+.imgSize {
+  width: 100%;
+  height: 100%;
+}

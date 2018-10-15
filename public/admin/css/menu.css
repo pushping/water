@@ -1,0 +1,78 @@
+#nestable .dd-handle,#nestable .dd-item>.dd-nodrag{
+    padding: 5px 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 36px;
+    height: 34px;
+    border: 1px solid lightgray;
+    margin: 0;
+}
+
+#nestable .dd-handle:hover{
+    color: #1ab394;
+}
+
+
+#nestable .dd-content,#nestable2 .dd-content{
+    display: block;
+    height: 34px;
+    margin:  5px 0;
+    border: 1px solid lightgray;
+}
+
+#nestable .dd-content{
+    padding: 6px 10px 6px 56px;
+}
+
+#nestable2 .dd-content{
+    padding: 6px 10px 6px 40px;
+}
+
+.dd-content a{
+    color: #676a6c;
+}
+
+#nestable .dd-content.active,#nestable2 .dd-content.active{
+    background-color: #f5f5f5;
+}
+
+#nestable2 .dd-content .area{
+    margin-left: 50px;
+}
+
+#nestable .dd-item，#nestable2 .dd-item{
+    position: relative;
+    display: block;
+    min-height: 22px;
+    padding: 0;
+    margin: 0;
+    line-height: 22px;
+}
+
+
+#nestable2 .dd-operation{
+    position: absolute;
+    right: 10%;
+    top: 0;
+    height: 34px;
+    padding: 6px 10px 6px;
+}
+
+#nestable .dd-item > button{
+    position: absolute;
+    left: 35px;
+    margin: 7px 0;
+}
+
+#nestable2 .dd-item > button{
+    position: absolute;
+    left: 0;
+    margin:0;
+    color: #676a6c;
+}
+
+#nestable .dd-item > button:focus,#nestable2 .dd-item > button:focus{
+    outline: none;
+}

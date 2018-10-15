@@ -1,0 +1,68 @@
+body{
+    font-family: Microsoft YaHei,Helvetica,Arial,sans-serif;
+}
+.login-bg{
+    background: url(images/login_bg4.jpg) no-repeat  #ffffff;
+    background-size: cover;
+}
+.login-box{
+    width: 380px;
+    min-width: 280px;
+    z-index: 100;
+    position: absolute;
+    right: 12.5%;
+    top: 15%;
+}
+.login-title{
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 64px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.login-title span{
+    width: 84px;
+    height: 84px;
+    line-height: 84px;
+    font-size: 34px;
+    display: inline-block;
+    background: url(images/bg-4.png);
+    text-align: center;
+    background-size: 100%;
+}
+.btn-login{
+    background-color: #38aff5;
+    border-color: #38aff5;
+    color: #FFFFFF;
+    width: 100%;
+}
+.btn-login:hover, .btn-login:focus, .btn-login:active, .btn-login.active{
+    background-color: #2EA0E3;
+    border-color: #2EA0E3;
+    color: #FFFFFF;
+}
+.input-icon{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+.input-icon>input {
+    padding-left: 30px;
+    padding-right: 6px;
+}
+.input-icon>[class*="fa-"] {
+    padding: 0 5px;
+    z-index: 2;
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    left: 3px;
+    line-height: 34px;
+    display: inline-block;
+    color: #909090;
+    font-size: 16px;
+}
+.input-icon>.form-control:focus{
+    border-color: #328AF6 !important;
+}

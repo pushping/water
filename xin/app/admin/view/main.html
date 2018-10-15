@@ -1,0 +1,202 @@
+{% set menuLists=acl.getActiveResource() %}
+
+{%- macro findParent(menus, currentItem) %}
+{% set lists=[] %}
+{% for item in menus %}
+{% if item['id'] == currentItem['parentid'] %}
+{% set a=php_array_unshift(lists, item) %}
+{% if item['parentid'] != 0 %}
+{% set lists = php_array_merge(findParent(menus, item), lists) %}
+{% endif %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% return lists %}
+{%- endmacro %}
+
+{% for item in menuLists %}
+{% if (_GET['menuid'] and _GET['menuid']==item['id']) or (_GET['_url']==item['url']) %}
+{% set currentMenus= php_array_merge(findParent(menuLists,item),[item]) %}
+{% break %}
+
+
+{% endif %}
+{% endfor %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	{{ get_title() }}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{{ stylesheet_link('ice/css/bootstrap.min.css') }}
+	{{ stylesheet_link('ice/css/font-awesome.min.css') }}
+	{{ stylesheet_link('ice/css/style.css') }}
+    {{ stylesheet_link('ice/css/index_v2.css') }}
+
+    {{ stylesheet_link('ice/layout/css/reset.css') }}
+    <!--[if IE 7]>
+	{{ stylesheet_link('ice/css/font-awesome-ie7.min.css') }}
+	<![endif]-->
+	{{ stylesheet_link('ice/css/ace-fonts.css') }}
+	{{ stylesheet_link('ice/css/ace.min.css') }}
+	{{ stylesheet_link('ice/css/ace-rtl.min.css') }}
+	{{ stylesheet_link('ice/css/ace-skins.min.css') }}
+	{{ stylesheet_link('plugins/dialog/dialog.css') }}
+	{{ stylesheet_link('plugins/toastr/toastr.min.css') }}
+
+	<!--[if lte IE 8]>
+	{{ stylesheet_link('ice/css/ace-ie.min.css') }}
+	<![endif]-->
+	<!--[if lt IE 9]>
+	{{ javascript_include('ice/js/html5shiv.js') }}
+	{{ javascript_include('ice/js/respond.min.js') }}
+	<![endif]-->
+	<style type="text/css">
+		
+	</style>
+	{% block css %}{% endblock%}
+	{% block style %}{% endblock%}
+	{{ javascript_include('ice/js/jquery-2.0.3.min.js')}}
+	{{ javascript_include('ice/js/bootstrap.min.js') }}
+	{{ javascript_include('ice/js/typeahead-bs2.min.js') }}
+	{{ javascript_include('ice/js/ace-elements.min.js') }}
+	{{ javascript_include('ice/js/ace.min.js') }}
+	{{ javascript_include('ice/js/ace-extra.min.js') }}
+	{{ javascript_include('ice/layout/js/layer.js')}}
+	{{ javascript_include('ice/js/common.js')}}
+	{{ javascript_include('ice/layout/js/func.js')}}
+	{{ javascript_include('ice/layout/js/tool.js')}}
+	<script type="application/javascript">
+        var API_URL='{{conf("API_URL")}}';
+	</script>
+</head>
+<body>
+<!--header start-->
+<div class="navbar navbar-default basic-color" id="navbar">
+	<script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+	</script>
+	<div class="navbar-container" id="navbar-container">
+		<div class="navbar-header pull-left" >
+			<a href="#" class="navbar-brand">
+				<img src="ice/layout/images/icon.png" alt=""  width="35" height="40">
+			</a><!-- /.brand -->
+			<div class="navbar-top-list pull-left">
+					{% if menuLists %}
+					<ul class="nav nav-list">
+						{%- macro buildMenuTreeItemtop(menus,outputUl,_menuids,_clientId) %}
+						{% for menu in menus %}
+						{% if menu['isshow'] and (_clientId==0 or menu['client_id']==currentMenus['id']) %}
+						<li class="{% if (php_in_array(menu['id'],_menuids)) OR (menu['id']==_GET['menuid'])%} active {%endif%}" >
+							<a href= "{% if  menu['url'] %}{{u(menu['url'],['menuid':menu['id']])}}{% else %}#{%endif%}" >
+								<i class="{% if menu['settings']['icon'] %}{{menu['settings']['icon']}}{% else %}icon-dashboard{% endif %}"></i>
+								<span class="menu-text space0"> {{menu['title']}} </span>
+							</a>
+						</li>
+						{%endif%}
+						{%endfor%}
+						{%- endmacro %}
+						{{buildMenuTreeItemtop(arr2tree(menuLists),0,[],0)}}
+					</ul><!-- /.nav-list -->
+					{%endif%}
+			</div>
+
+		</div><!-- /.navbar-header -->
+		<div class="navbar-header pull-right header-height" role="navigation">
+			<ul class="nav ace-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle basic-color" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="./ice/avatars/avatar2.png"> </span> {{this.auth.getTicket()['username']}} <b class="caret"></b> </a>
+					<ul class="dropdown-menu animated fadeInRight"> <span class="arrow top"></span>
+						<li><a href="#" onclick="showDialog('编辑用户',{iframe:{url:'{{u('admin/account/edit',['id':this.auth.getTicket()['uid'],'pow':'editpow'])}}'},area:['600px', '450px']})">修改密码</a></li>
+						<li class="divider"></li>
+						<li> <a href="{{u('admin/account/logout')}}">退出</a> </li>
+					</ul>
+				</li>
+			</ul><!-- /.ace-nav -->
+		</div><!-- /.navbar-header -->
+	</div><!-- /.container -->
+</div>
+<!--header end-->
+<div class="main-container" id="main-container">
+	<script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+	</script>
+
+	<div class="main-container-inner">
+		<a class="menu-toggler" id="menu-toggler" href="#">
+			<span class="menu-text"></span>
+		</a>
+
+		<!--！左侧菜单栏，暂时未做迭代，仅支持二级菜单-->
+		<div  class="sidebar" id="sidebar">
+			<script type="text/javascript">
+                try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+			</script>
+			<div id="menu">
+				<!---->
+				{% if menuLists %}
+				<ul class="nav nav-list">
+					{%- macro buildMenuTreeItem(menus,outputUl,_menuids,_clientId) %}
+					{% for menu in menus%}
+						{%if _GET['menuid']== menu['id']%}
+							{%if menu['childs']%}
+								{%for item in menu['childs']%}
+									{% if item['isshow'] and (_clientId==0 or item['client_id']==_clientId) %}
+									<li class="{% if (php_in_array(item['id'],_menuids)) OR (item['id']==_GET['menuid'])%} active {%endif%}" >
+										<a href= "{% if !item['childs'] AND item['url'] %}{{u(item['url'],['itemid':item['id']])}}{% else %}#{%endif%}" class="{% if menu['childs'] %}dropdown-toggle{%endif%}" >
+											<i class="{% if item['settings']['icon'] %}{{item['settings']['icon']}}{% else %}icon-dashboard{% endif %}"></i>
+											<span class="menu-text"> {{item['title']}} </span>
+											{% if item['childs'] %}<b class="arrow icon-angle-down"></b>{%endif%}
+										</a>
+										{% if item['childs'] %}
+										<ul class="submenu">	
+											{% for submenu in item['childs'] %}
+											<li>
+												<a href="{{u(submenu['url'],['menuid':submenu['id']])}}" {%if submenu['id']=='142'%} target= _blank{%endif%} >
+													<i class="icon-double-angle-right"></i>
+													{{submenu['title']}}
+												</a>
+											</li>
+											{%endfor%}
+										</ul>
+										{%endif%}
+									</li>
+									{%endif%}
+								{%endfor%}
+							{%endif%}
+						{%endif%}
+					{%endfor%}
+					{%- endmacro %}
+					{{buildMenuTreeItem(arr2tree(menuLists),0,[],0)}}
+				</ul><!-- /.nav-list -->
+				{%endif%}
+			</div>
+		</div>
+
+		<div class="main-content">
+			<div class="page-content" id="page-content">
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+	</div><!-- /.main-container-inner -->
+
+	<!--start model-->
+	{% block model %}{% endblock %}
+	<!--/ .model end-->
+	<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+		<i class="icon-double-angle-up icon-only bigger-110"></i>
+	</a>
+</div><!-- /.main-container -->	
+{{ javascript_include('plugins/toastr/toastr.min.js')}}
+<!--[if lte IE 8]>
+<script src="{{ javascript_include('ice/js/excanvas.min.js')}}"></script>
+<![endif]-->
+{% block javascript %}
+<script type="text/javascript">
+</script>
+{% endblock%}
+{% block script %}
+{% endblock %}
+</body>
+</html>

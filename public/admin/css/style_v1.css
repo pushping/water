@@ -1,0 +1,121 @@
+.space0{
+    padding: 0px;
+    margin:0px
+}
+
+.space15{
+    padding-left:7.5px;
+    padding-right: 7.5px;
+}
+.margintop5 {
+    margin-top: 5px
+}
+.margintop10{
+     margin-top:10px
+}
+.margintb15{
+    margin:15px 0px
+}
+.margintop15{
+    margin-top:15px
+}
+.margintop45{
+    margin-top:85px
+}
+
+.margintop25{
+    margin-top:25px
+}
+.space0 ul {
+    margin:0;
+    padding:5px 0
+}
+.space0 ul li{
+    height:22px;
+    line-height: 22px;
+    list-style: none
+}
+.space0 ul li span{
+    margin:0 5px
+}
+.margint10{
+    margin-top:10px
+}
+.gray{
+    background-color: #F0F0F0;
+    z-index: 1;
+    transition: left .3s;
+    overflow: auto;
+}
+.ivu-card {
+    background: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    position: relative;
+    transition: all .2s ease-in-out;
+}
+.ivu-card-bordered {
+    border: 1px solid #dddee1;
+    border-color: #e9eaec;
+}
+.ivu-card-body {
+    padding: 15px;
+}
+.padding25 {
+    padding: 30px 25px;
+}
+
+.center {
+    text-align: center;
+    display: flex;
+    marign-top:30px;
+    flex-direction: column;    
+}
+.h3{
+    font-family:"微软雅黑";
+    font-size: 17px;
+    padding:0;margin:0 0 11px 0;
+    font-weight: 700
+}
+.subtitle{
+     font-family:"微软雅黑";
+    font-size: 14px;
+    padding:0;
+    font-weight:400
+}
+.alititle{
+    text-align:center;
+    margin:15px 0;
+}
+.titlepadding{
+    margin:15px 0 15px 15px;
+}
+#housetable{
+    margin-top:15px
+}
+#housetable thead tr th{
+    font-size:13px;
+    padding:10px 5px;
+    text-align:center; 
+}
+.abc{
+    float:right;
+}
+.module_top_box {
+    min-height:600px;
+}
+.module_top_div {
+    max-width: 100%;
+    padding-left:0px;
+    min-height: 150px
+}
+
+.module_box {
+    border: 2px solid #bbb;
+    border-radius: 10px;
+    margin-top: 10px
+}
+.select_box {
+    border: 2px solid #bbb;
+    border-radius: 10px;    
+}

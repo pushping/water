@@ -1,0 +1,4 @@
+.git*
+./Phalcon
+./var/data/*/*.*
+./var/logs/*.*

@@ -1,0 +1,7 @@
+/.vscode
+/Phalcon
+/conf/global.php
+/.idea
+/public/uploads
+/xin/boot.php
+/conf/global.php.bak

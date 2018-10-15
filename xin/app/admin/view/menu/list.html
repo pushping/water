@@ -1,0 +1,184 @@
+{% extends "index.html" %}
+
+{% block css %}  
+{{ stylesheet_link('css/system/menu.css') }}
+{% endblock%}
+
+{% block content %}
+    {% include 'partial/new_breadcrumb.html' %}
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content radius-5 clearfix">
+                <div class="dd pull-left padding20" id="nestable" style="width: 60%;border-right: 1px solid lightgray;overflow: auto;">
+                    <ol class="dd-list">
+                        {{menuHtml}}
+                    </ol>
+                    <button id="save-order" class="btn btn-primary" onclick="saveOrder()">保存排序</button>
+                </div>
+                
+                <div class="info_area pull-left padding20" style="width: 40%;">
+                    <div class="info_title clearfix">
+                        <span id="title">菜单管理</span>
+                        <i id="del_icon" data-id='' class="fa fa-trash pull-right" onclick="deleteMenu()"></i>
+                    </div>
+                    <div class="info_body marginTop10">
+                        <div class="form-group">
+                            <label>菜单名:</label>
+                            <input type="text" id="menu_name" placeholder="请输入菜单名称" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>菜单链接:</label>
+                            <input type="text" id="menu_href" placeholder="请输入菜单链接" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>FontAwesome图标:</label>
+                            <input type="text" id="menu_icon" placeholder="菜单图标：如user" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>是否显示:</label>
+                            <label class="marginRight10"><input id="yes" type="radio" name="menu_isshow" class="i-checks" value="1">是</label>
+                            <label class="marginRight10"><input id="no" type="radio" name="menu_isshow" class="i-checks" value="0">否</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="menu_id">
+                            <button class="btn btn-primary" onclick="save()" data-action="save-all" >保存</button>
+                            <button class="btn btn-danger" onclick="window.location.reload()" data-action="cancel-all">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ javascript_include('js/plugins/nestable/jquery.nestable.js')}}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#nestable").nestable({
+            group: 1,
+        })
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    })
+    
+    $('#nestable').on('click','.dd-content',function(){
+        $('.dd-content.active').removeClass('active');
+        $(this).addClass('active');
+        $('#menu_id').val($(this).data('id'));
+        $('#menu_name').val($(this).text().trim());
+        $('#menu_href').val($(this).data('href'))
+        $('#menu_icon').val($(this).data('icon'))
+        if($(this).data('isshow')==1){
+            $('#yes').iCheck('check');
+        }else{
+            $('#no').iCheck('check');
+        }
+    })
+            
+    function deleteMenu(){
+        var id = $('#menu_id').val();
+        if(!id){
+            layer.alert('请选择菜单',{icon: 2});
+            return;
+        }
+        confirmTip("您确定要删除所选的菜单项吗？",'删除操作',function(){
+            $.ajax({
+                url: "{{u('admin/menu/delete')}}",
+                type: 'post',
+                dataType: 'JSON',
+                data:{id:id},
+            })
+            .always(function(res) {
+                if (res.status == 'ok') {
+                    showTip(res.message[0],true,function(){location.reload();});
+                }else{
+                    var error_info = "删除失败";
+                    if(res.status == 'error'){
+                        error_info = res.message[0];
+                    }
+                    showTip(error_info,false);
+                }
+            });
+            layer.closeAll();
+        },function(){
+            layer.closeAll();
+        })
+    }
+
+    //保存菜单
+    function save(){
+        var id=$('#menu_id').val();
+        var name=$('#menu_name').val();
+        var href=$('#menu_href').val();
+        var icon=$('#menu_icon').val();
+        var isshow=$('input[name=menu_isshow]:checked').val();
+        if(!id){
+            layer.alert('请选择需要编辑的菜单',{icon: 2});
+            return;
+        }
+        $.ajax({
+            url: "{{u('admin/menu/edit')}}",
+            type: 'post',
+            dataType: 'JSON',
+            data:{id:id,name:name,href:href,icon:icon,isshow: isshow},
+        })
+        .always(function(res) {
+            if (res.status == 'ok') {
+                layer.msg('更新成功', {icon: 1,time: 1000}, function(){
+                    location.reload();
+                });
+            }else{
+                var error_info = "更新失败";
+                if(res.status == 'error'){
+                    error_info = res.message[0];
+                }
+                layer.alert(error_info,{icon: 2});
+            }
+        });
+    }
+
+    // 保存排序
+    function saveOrder(){
+        $("#save-order").attr('disabled',false);
+        var order = getSort($("#nestable").nestable('serialize'));
+        $.ajax({
+            url: "{{u('admin/menu/order')}}",
+            type: 'post',
+            dataType: 'JSON',
+            data:{order:order},
+        })
+        .always(function(res) {
+            if (res.status == 'ok') {
+                layer.msg('保存成功', {icon: 1,time: 1000}, function(){
+                    location.reload();
+                });
+            }else{
+                var error_info = "保存失败";
+                if(res.status == 'error'){
+                    error_info = res.message;
+                }
+                layer.alert(error_info,{icon: 2});
+                $("#save-order").removeAttr("disabled");
+            }
+        });
+    }
+
+    function getSort(obj){
+        var order=[];
+        if(obj.length){
+            $.each(obj, function(index, val) {
+                order.push(val.id)
+                 if(val.children){
+                    order = order.concat(getSort(val.children));
+                 }
+                 
+            });
+        }
+        return order;
+    }
+</script>
+{% endblock%}

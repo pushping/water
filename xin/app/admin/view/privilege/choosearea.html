@@ -1,0 +1,55 @@
+{% extends "empty.html" %}
+{% block header %}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css')}}
+<style>
+</style>
+{% endblock%}
+{% block content %}
+<div class="ibox-content" id="content">
+    <div id="using_json">
+    </div>
+</div>
+{%endblock%}
+{% block script%}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+{{ javascript_include('js/vue.js')}}
+<script>
+    var ajax = Tool.http();
+    var name = jQuery.mGetUrlParam("name");
+    var id = jQuery.mGetUrlParam("id");
+    var listData = {};
+    var url = "index.php?_url=admin/"+name+"/getData";
+    ajax.get(url,function(res){
+        var html = "<ul>"+lists(res)+"</ul>";
+        $("#using_json").html(html)
+        $("#using_json").jstree()
+        if(id){
+            $("li[data-id="+id+"]").click();
+            console.log($("li[data-id="+id+"]"))
+        }
+        $('#using_json').on('select_node.jstree', function (e, data) {
+            // if(data.node.children.length>0){
+            //     parent.parent.layer.alert("请选择更详尽的地址.");
+            //     clicked.removeClass("jstree-clicked")     
+            // }
+        });
+    })
+
+
+    function lists($lists){
+        $html = '';
+        $.each($lists,function($i,$o){
+            if($o['childs']!==undefined){
+                $html += "<li data-id="+$o['id']+" data-parentid="+$o['parentid']+">"+$o['name']+"<ul>";
+                $html +=lists($o['childs']);
+                $html +=  "</ul></li>"; 
+            }else{
+                $html +="<li data-id="+$o['id']+" data-parentid="+$o['parentid']+" data-jstree='{\"type\":\""+$o['name']+"\"}'>"+$o['name']+"</li>";
+            }
+           
+        })
+        return $html;
+    }
+
+</script>
+{% endblock%}

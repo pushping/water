@@ -1,0 +1,66 @@
+<?php
+/**
+ * @param pageCount recordCount pageSize urlFormat pageIndex
+ */
+		$setPages=3;
+		$page = $setPages+1;
+		$offset = ceil($setPages/2-1);
+		
+		$from = $pageIndex - $offset;
+		$to = $pageIndex + $offset;
+		$more = 0;
+		if($page >= $pageCount) {
+			$from = 2;
+			$to = $pageCount-1;
+		} else {
+			if($from <= 1) {
+				$to = $page-1;
+				$from = 2;
+			}  elseif($to >= $pageCount) { 
+				$from = $pageCount-($page-2);  
+				$to = $pageCount-1;  
+			}
+			$more = 1;
+		}
+?>
+  <ul class="pagination {%if class%} {{class}}{%endif%}"{%if style%} style="{{style}}"{%endif%}>
+	{%if pageIndex==1%}			
+        <li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li>        
+        <li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li>
+        <li class="footable-page active"><a data-page="0">1</a></li>
+    {%else%}    		
+        <li class="footable-page-arrow">            
+            <a data-page="first" href="{{php_str_replace('@PAGE@', 1, urlFormat)}}">«</a>            
+        </li>        
+        <li class="footable-page-arrow">
+            <a data-page="prev" href="{{php_str_replace('@PAGE@',pageIndex-1,urlFormat)}}">‹</a>
+        </li>
+		{%if from>2  and more %}
+		<li><a href="{{php_str_replace('@PAGE@',pageIndex-2,urlFormat)}}">...</a></li>
+        {% else %}
+        <li><a href="{{php_str_replace('@PAGE@',1,urlFormat)}}">1</a></li>
+		{%endif%}
+    {%endif%}
+    
+	{%if from<=to %}
+        {% for i in php_range(from,to)%}
+        <li class="footable-page {% if i == pageIndex %}active{%endif%}">
+            <a data-page="{{i}}" href="{{php_str_replace('@PAGE@',i,urlFormat)}}">{{i}}</a>
+        </li>
+		{% endfor %}
+	{% endif %}
+		
+	{% if pageIndex<pageCount %}
+		{% if to<pageCount-1 and more %}
+        <li><a href="{{php_str_replace('@PAGE@',pageIndex+2,urlFormat)}}">...</a></li>
+        {% else %}
+        <li><a href="{{php_str_replace('@PAGE@',pageCount,urlFormat)}}">{{pageCount}}</a></li>
+		{% endif %}
+        <li class="footable-page-arrow"><a data-page="next" href="{{php_str_replace('@PAGE@',pageIndex+1,urlFormat)}}">›</a></li>      
+        <li class="footable-page-arrow"><a data-page="last" href="{{php_str_replace('@PAGE@',pageCount,urlFormat)}}">»</a></li>
+    {% elseif pageIndex==pageCount and pageIndex!=1 %}
+        <li class="footable-page active"><a data-page="{{pageCount}}">{{pageCount}}</a></li>         
+        <li class="footable-page-arrow disabled"><a data-page="next" href="#next">›</a></li>      
+        <li class="footable-page-arrow disabled"><a data-page="last" href="#last">»</a></li> 
+	{% endif %}
+  </ul>

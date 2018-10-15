@@ -1,0 +1,104 @@
+{% extends "index.html" %}
+{% block css %}
+
+{{ stylesheet_link('css/style.css') }}
+{{ stylesheet_link('css/my-style.css') }}
+{{ stylesheet_link('css/index.css') }}
+{{ stylesheet_link('css/reset.css') }}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+{{ stylesheet_link('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+
+{% endblock%}
+{% block style%}
+<style type="text/css">
+    .display {display:none}
+    #wrapper .sidebar-collapse{display:none}
+    .wrapper,.wrapper-content {padding:0px!important;margin: 0px!important}
+    #page-wrapper {margin-left:0px!important;padding:0px;min-height: auto!important;}
+
+     #jstree1 {font-size: 11px}
+    .jstree-open > .jstree-anchor > .fa-folder:before {content: "\f07c";}
+    .jstree-default .jstree-icon.none { width: 0;}
+    .jstree-default .jstree-open>.jstree-ocl {background-position: -35px -4px}
+    .jstree-default .jstree-closed>.jstree-ocl{background-position: 0 -4px}
+    .jstree-default .jstree-node {background-position: -366px -4px}
+
+    .map_compoent_modal .slimScrollDiv{height: 175px!important}
+    .map_compoent_modal .content{height: 175px!important}
+
+	.nav > li.active {background:unset;border:0}
+	.nav > li > a {font-weight: normal;color: #A7B1C2}
+    .group_checkbox {display:flex}
+    .BMap_pop>img {display: none}
+    .map_content_left {width:200px;float:left}
+    .map_label {float:left;}
+    .map_title {float:left;margin-left:10px}
+    .map_addr {float:left;margin-top:10px}
+    .map_content_right {float:right;width: 40px;color:#fff;height: 40px;text-align: center;line-height: 40px;border-radius: 4px;}
+    .icheckbox_square-green {width:15px!important;height:15px!important}
+    .icheckbox_square-green.checked {background-position: -50px -1px}
+    .layui-layer-shade {background-color:rgba(55, 55, 55, 0.6)!important}
+
+    .search {position:absolute;font-size:14px;right:5px;top:10px;color:#A7B1C2}
+    .search:hover {color:#108ee9;cursor:pointer}
+
+    .form-control,.select {font-size:12px; color: #000}
+
+    .block {width:60px;text-align: center}
+    .block .map_label{margin-top:8px;width:60px}
+    .slimScrollDiv {overflow: unset!important}
+    .tb1{
+        width: 80%;
+    }
+    .row{
+        margin-right :0!important;;
+        margin-left: 0!important;
+    }
+</style>
+
+{% endblock %}
+{% block content %}
+<h3>今日开局数：{{countGame}}</h3>
+<h3>今日平台抽水：{{sumGain}}</h3>
+<table class="table tb1">
+    <thead>
+    <tr>
+        <th>游戏ID</th>
+        <th>游戏时间</th>
+        <th>游戏分红</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in games%}
+    <tr>
+        <td>{{item['id']}}</td>
+        <td>{{item['createtime']}}</td>
+        <td>{{item['gain_point']}}</td>
+        <td>
+            <a href="{{url('admin/index/gamedetail',['id':item['id']])}}">查看</a>
+        </td>
+    </tr>
+    {% endfor%}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="100%">
+            {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+            <div class="pull-right m-t-md">
+                <a class="btn btn-primary" href="{{url('admin/index/newgame')}}">新开一局</a>
+            </div>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+{% endblock %}
+{% block javascript%}
+{{ javascript_include('js/tool.js')}}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+{{ javascript_include('js/plugins/iCheck/icheck.min.js')}}
+{{ javascript_include('js/vue.js')}}
+{{ javascript_include('js/index_map.js')}}
+{{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js')}}
+
+{% endblock%}

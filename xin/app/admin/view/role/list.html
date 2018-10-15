@@ -1,0 +1,147 @@
+{% extends "index.html" %}
+{% block content %}
+    {% include 'partial/new_breadcrumb.html' %}
+    <div class="col-sm-12">
+        <form action="{{u('admin/role/list')}}" method="POST">
+            <!--<div class="ibox float-e-margins">-->
+                <!--<button class="btn btn-primary" type="button" onclick="editRole()">新增用户组</button>-->
+                <!--<div class="input-group pull-right col-xs-3">-->
+                    <!--<input type="text" name="keyword" class="form-control" placeholder="请输入用户组名" value="{{keyword}}"> -->
+                    <!--<span class="input-group-btn"> -->
+                        <!--<button type="submit" class="btn btn-white">搜索</button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content radius-5">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="input-group col-xs-3 m-b-md">
+                                <input type="text" name="keyword" class="form-control" placeholder="请输入用户组名" value="{{keyword}}">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-white">搜索</button>
+                                </span>
+                            </div>
+                            <div class="table-responsive">
+                                {% if objectlist %}
+                                <table  class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>用户组</th>
+                                        <th>描述</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in objectlist %}
+                                    <tr>
+                                        <td>{{item['id']}}</td>
+                                        <td>{{item['rolename']}}</td>
+                                        <td>{{item['description']}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-white" href="{{u('admin/account/list',['roleid':item['id']])}}" title="用户"><i class="fa fa-user"></i></a>
+                                                <button type="button" class="btn btn-white" title="编辑" onclick="editRole({{item['id']}})"><i class="fa fa-edit"></i></button>
+                                                <!-- <a href="{{u('award',['id':item['id']])}}" class="btn btn-white" title="权限分配"><i class="fa fa-gavel"></i></a> -->
+                                                <button type="button" class="btn btn-white" title="权限分配" onclick="addPrivilege('{{item['rolename']}}',{{item['id']}})"><i class="fa fa-gavel"></i></button>
+                                                <button type="button" class="btn btn-white" title="删除" onclick="myAjaxDeleteData('{{u('delete')}}',{id:{{item['id']}}},function(){location.reload();})"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    {% if pagination.pageCount()>0 %}
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+                                            <div class="pull-right m-t-md">
+                                                <button class="btn btn-primary" type="button" onclick="editRole()">新增用户组</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    {% endif %}
+                                </table>
+                                {% else %}
+                                暂无数据
+                                <table  class="table table-hover">
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="pull-right m-t-md">
+                                                <button class="btn btn-primary" type="button" onclick="editRole()">新增用户组</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+    function deleteOperation() {
+        confirmTip('您是否确认要删除这一个用户组','删除操作');
+    }
+    function editRole(id){
+        if(id){
+            dialogSizeTip('{{u("edit",["id":""])}}'+id,'编辑角色', ['700px', '400px'], null);
+        }
+        else{
+            dialogSizeTip('{{u("create")}}','新增角色', ['700px', '400px'], null);
+        }
+    }
+    //权限分配
+    // function addPrivilege(role_name,id){
+    //     dialogSizeTip('{{u("privilege",["id":""])}}'+id, '【'+role_name+'】权限分配',['700px', '460px'], ['保存','取消'],function(){
+    //         var node_ids=[];
+    //         var tree = $("iframe")[0].contentWindow.document.getElementsByClassName('tree')
+    //         $(tree).find("input:checked").each(function(){
+    //             node_ids.push(this.id);
+    //         });
+    //         if(node_ids.length==0){
+    //             alert("请分配角色权限");
+    //             return;
+    //         }
+    //         var role_nodes = $("iframe")[0].contentWindow.document.getElementById('role_nodes');
+    //         $(role_nodes).val(node_ids.join(","));
+    //         var form = $("iframe")[0].contentWindow.document.getElementById('role-forms');
+    //         $(form).submit();
+    //     },function(){
+    //         layer.closeAll();
+    //     });
+    // }
+    //权限分配
+    function addPrivilege(role_name,id){
+        dialogSizeTip('{{u("privilege",["id":""])}}'+id, '【'+role_name+'】权限分配',['700px', '460px'], ['保存','取消'],function(){
+            var node_ids=[];
+            var ref = $("iframe")[0].contentWindow.window.ref;
+            var node_ids = ref.get_all_checked();  //使用get_checked方法
+
+            for(var i = 0 ; i < node_ids.length ; i ++ ){
+                if(node_ids[i] == '#'){
+                    node_ids.splice( i , 1);
+                }
+            }
+            if(node_ids.length==0){
+                alert("请分配角色权限");
+                return;
+            }
+            var role_nodes = $("iframe")[0].contentWindow.document.getElementById('role_nodes');
+            $(role_nodes).val(node_ids.join(","));
+            var form = $("iframe")[0].contentWindow.document.getElementById('role-forms');
+            $(form).submit();
+        },function(){
+            layer.closeAll();
+        });
+    }
+</script>
+{% endblock%}

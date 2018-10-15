@@ -1,0 +1,149 @@
+﻿@charset "utf-8";
+/* CSS Document */
+/*--------------------------------------------easyuiExtend----------------------------------------------------*/
+.tabs-wrap{background-color:#ffffff;}
+.tabs-header{border:0px;background-color:#ffffff;}
+.tabs-panels{border:0px;}
+.tabs {height: 36px;font-size:14px;}
+.tabs li {height: 36px;line-height: 36px;}
+.tabs li.tabs-selected a.tabs-inner {background: #fff;}
+.tabs li a.tabs-inner {background: #e6e6e6;}
+.tabs li a.tabs-inner {padding: 0 20px;height: 35px;line-height: 35px;}
+/*.panel-header, .panel-body {border: none;border-bottom: #ddd solid 1px;} 导致事件高级搜索下拉框多出一条底部边框*/
+.datagrid-cell,.datagrid-cell-group,.datagrid-header-rownumber,.datagrid-cell-rownumber {margin: 0;padding: 0 4px;white-space: nowrap;word-wrap: normal;overflow: hidden;line-height: 40px;font-weight: normal;height: 40px;}
+.datagrid-header td,.datagrid-body td,.datagrid-footer td {border-width: 0 1px 1px 0;border-style: solid;margin: 0;padding: 0;}
+.datagrid-row-alt {background: #EEEEEE;}
+.layout-left{position: absolute;left: 15px; }
+.panel-body{background-color: #ffffff; color: #000; font-size: 12px;}
+.datagrid-toolbar, .datagrid-pager{background: #FFF;}
+/*.datagrid-header-inner{width:100%;} 导致列表有滚动条的时候表头与表格内容无法对齐，因为表头没有缺少滚动条的宽度*/
+.datagrid-header-row .datagrid-cell{font-weight: bold;}/*表头字体加粗*/
+.datagrid-htable{color:#000;}/*表头字体颜色*/
+.datagrid-btable, .datagrid-ftable{color: #000; border-collapse: separate;}/*表格字体颜色*/
+.datagrid-btable a{color:#36c; text-decoration:underline;}/*表格链接颜色及下划线*/
+.datagrid-row-over {background: #5fa9ed;color: #fff;cursor: default;}/*单行滑过颜色*/
+.datagrid-row-over a{color:#fff; text-decoration:underline;}/*单行滑过 a 标签样式*/
+.datagrid-row-over a:hover{color:#fff; text-decoration:underline;}
+.datagrid-row-selected {background: #448aca;color: #fff;}/*单行选中*/
+.datagrid-row-selected a{color:#fff; text-decoration:none;}/*单行选中 a 标签样式*/
+/*.datagrid-htable, .datagrid-btable{width:100%;}导致表头与下面不对齐*/
+.datagrid-row div.datagrid-cell-check{line-height:18px;}
+.spinner{border-color:#c7c7c7; border-radius:3px;}
+.textbox-invalid{border-color:#c7c7c7}/*easyui小框框边框颜色是红色*/
+.textbox{border-radius:3px 3px 3px 3px;}/*easyui小框框边框圆角*/
+.datagrid-header td.datagrid-header-over{background:none;}/*列表表头鼠标滑过背景颜色不变*/
+.datagrid-header{
+  background-color: #fafafa;
+  background: -webkit-linear-gradient(top,#f5f5f5 0,#e5e5e5 100%);
+  background: -moz-linear-gradient(top,#f5f5f5 0,#e5e5e5 100%);
+  background: -o-linear-gradient(top,#f5f5f5 0,#e5e5e5 100%);
+  background: linear-gradient(to bottom,#f5f5f5 0,#e5e5e5 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f5f5f5,endColorstr=#e5e5e5,GradientType=0);
+}/*列表表头背景颜色*/
+
+.layout-split-west{border-right: 5px solid #d8d8d8;}/*列表左侧树形边框颜色*/
+.layout-split-west .panel-body{background:#f4f4f4;}/*列表左侧树形背景颜色*/
+.datagrid-btable img{width:12px; height:12px; margin:0 0 0 10px; vertical-align:middle; margin-top:-4px; *margin-top:0;}/*事件状态图标间距*/
+.datagrid-toolbar{border-width:0;}/*列表上会多出一条线*/
+.datagrid-toolbar{padding:0;}/*easyui自带padding:1px 2px,搜索区域不需要*/
+.datagrid-toolbar{position:relative; z-index:10;}/*解决IE兼容模式下高级搜索被列表遮挡问题*/
+.combo-p{border:1px solid #c7c7c7;}/*事件高级搜索下拉框增加边框*/
+.combo{border:1px solid #c7c7c7; transition:border 0.5s;}/*事件高级搜索下拉框颜色*/
+.combo:hover{border:1px solid #7ecef4; box-shadow:#7ecef4 0 0 5px;}
+.window-body {overflow: visible;}/*弹出框去除滚动条*/
+
+.easui-layout-title {
+    color: black;
+}
+
+/**蓝底*/
+
+.panel-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    height: 24px;
+    line-height: 28px;
+    padding-left: 10px;
+}
+
+.window {
+    background-color: #f3f3f3;
+    background: -webkit-linear-gradient(top,#0292e6 0,#0292e6 20%);
+    background: -moz-linear-gradient(top,#0292e6 0,#0292e6 20%);
+    background: -o-linear-gradient(top,#0292e6 0,#0292e6 20%);
+    background: linear-gradient(to bottom,#0292e6 0,#0292e6 20%);
+    background-repeat: repeat-x;
+  /*  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0292e6,endColorstr=#0292e6,GradientType=0);*/
+}
+
+.window, .window-shadow {
+    position: absolute;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
+}
+
+.window {
+    overflow: hidden;
+    padding: 1px;
+    /* border-width: 1px; */
+    border-style: solid;
+}
+
+
+.tabs li a.tabs-inner {
+    color: #575765;
+    background-color: #f3f3f3; 
+    background: -webkit-linear-gradient(top,#f3f3f3 0,#f3f3f3 100%);
+    background: -moz-linear-gradient(top,#f3f3f3 0,#f3f3f3 100%);
+    background: -o-linear-gradient(top,#f3f3f3 0,#f3f3f3 100%);
+    background: linear-gradient(to bottom,#f3f3f3 0,#f3f3f3 100%);
+    background-repeat: repeat-x;
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f3f3f3,endColorstr=#f3f3f3,GradientType=0);*/
+}
+
+
+.tabs li.tabs-selected a.tabs-inner {
+    background-color: #ffffff;
+    color: #ffffff;
+    background: -webkit-linear-gradient(top,#0292e6 0,#0292e6 100%);
+    background: -moz-linear-gradient(top,#0292e6 0,#0292e6 100%);
+    background: -o-linear-gradient(top,#0292e6 0,#0292e6 100%);
+    background: linear-gradient(to bottom,#0292e6 0,#0292e6 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0292e6,endColorstr=#0292e6,GradientType=0);
+}
+ .tabs { 
+    padding-left: 0px; 
+	 height: 32px;
+     -moz-border-radius: 0px 0px 0 0;
+    -webkit-border-radius: 0px 0px 0 0;
+    border-radius: 0px 0px 0 0;
+}
+
+
+.tabs li.tabs-selected a.tabs-inner {
+    font-weight: normal;  
+    outline: none;
+}
+.tabs li a.tabs-inner { 
+    -moz-border-radius: 0px 0px 0 0;
+     -webkit-border-radius:0px 0px 0 0;
+    border-radius:0px 0px 0 0;
+} 
+ .tabs li.tabs-selected a.tabs-inner {
+      border-bottom: 0px solid #ffffff; 
+}
+.tabs li {
+    height: 36px;
+     line-height: 0px; 
+}
+.tabs li a.tabs-inner {
+    background: #f3f3f3;
+    padding: 0px 10px;
+}
+.yearbox ul li a { 
+    line-height: 45px;
+}

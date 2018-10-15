@@ -1,0 +1,106 @@
+{% extends "empty.html" %}
+{% block style %}
+    <style>
+        .tree li {
+            list-style: none;
+            font-size: 16px;
+        }
+    </style>
+{% endblock%}
+{% block header %}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+{{ stylesheet_link('css/floor_designer.css') }}
+{% endblock%}
+{% block content %}
+    {% if isSaved %}
+    <script>
+        var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+        parent.layer.closeAll();
+        window.parent.operateTip('success','reload');
+    </script>
+    {% else %}
+    <div class="wrapper dialog-f8">
+        <form method="post" id="role-forms" class="form-horizontal">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content border-none" >
+                        <div class="tree">
+                            <input type="hidden" id="role_nodes" name="role_nodes">
+                            <input type="hidden" name="dosubmit" value="yes">
+                            <div class="form-group">
+                                <!--{{node_html}}-->
+                                <ul></ul>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!-- <div class="box_footer" style="position: relative;width: 100vw;margin: 0 -15px;">
+                <button class="footer-btn footer-btn0" type="button" id="save-privilege">保存权限</button>
+                <button class="footer-btn footer-btn1" type="button" onclick="closeIframe()">返回</button>
+            </div> -->
+        </form>
+    </div>
+    {% endif %}
+{% endblock%}
+
+{% block script %}
+{{ javascript_include('js/drag/js/drag.js')}}
+{{ javascript_include('js/drag/js/floor_designer.js')}}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js') }}
+<script>
+    $(function(){
+
+        var nodes = [];
+        var treeSelecteds = {{json_role_node}};
+        function createNodes( data , node ){
+            $.each( data , function ( i , n ) {
+                var nd = {
+                    id : n.id ,
+                    parentid :n['parentid'],
+                    text : n['title'],
+                    icon : 'fa ' + n['settings']['icon'],
+                    "state" : { "selected" : false , opened : false , checked : false }
+                }
+
+                for(var i = 0 ; i< treeSelecteds.length ; i++ ){
+                    if(treeSelecteds[i] == nd.id ){
+                        nd.state.selected =   nd.state.opened =   nd.state.checked =true;
+                    }
+                }
+                node.push(nd);
+                if( n.son ){
+                    nd.children = nd.children || [] ;
+                    nd.state.checked = false;
+                    createNodes( n.son ,nd.children  );
+                }
+
+            })
+        }
+       createNodes( {{menu_tree}} , nodes )
+
+       $(".tree .form-group").jstree({
+            'core': {
+                data : nodes,
+                "check_callback": true,
+                'multiple': false,
+            },
+            "force_text": true,
+            plugins: ["types", "checkbox", "themes", "html_data"],
+            "checkbox": {
+                "keep_selected_style": false,//是否默认选中
+                "three_state": true,//父子级别级联选择
+                "tie_selection": false,
+    },
+        });
+        var ref =  $('.tree .form-group').jstree(true)
+        ref.get_all_checked = function(full) {
+            var tmp=new Array;
+            for(var i in this._model.data){
+                if(this.is_undetermined(i)||this.is_checked(i)){tmp.push(full?this._model.data[i]:i);}
+            }
+            return tmp;
+        };
+       window.ref = ref;
+    });
+
+</script>
+{% endblock%}

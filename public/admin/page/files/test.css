@@ -1,0 +1,210 @@
+.popover{
+    color: black !important;
+}
+#message-tip+.popover .popover-content{
+    padding: 2px;
+    font-size: 14px;
+    text-align: center;
+    width: 130px;
+}
+#message-tip{
+    display: block;
+    color: white;
+}
+#message-tip:hover{
+    color: white;
+    text-decoration: none;
+}
+
+#message-tip:focus,.modal button:focus{
+    text-decoration: none;
+    outline: none;
+}
+
+#messageModal .modal-dialog{
+    width: 960px;
+}
+
+#messageModal .modal-body{
+    color: white;
+    background: url(../../images/overview/bg1.png);
+	background-size: 100% 100%;
+}
+
+#messageModal .modal-body .body-header h3 span{
+    display: inline-block;
+    padding: 5px;
+    margin-left: -15px;
+    background: -webkit-linear-gradient(left, rgba(119, 196, 255, .5), rgba(119, 196, 255, 0));
+}
+
+#messageModal .form-control{
+    color: white;
+    background-color: transparent;
+    width: 150px;
+}
+#messageModal table{
+    border: none !important;
+}
+#messageModal table th,#messageModal table td{
+    border: none;
+    text-align: center;
+}
+
+#messageModal table thead{
+    background-color: #3f7198;
+}
+
+#messageModal table tbody tr:nth-child(even) {
+    background-color: rgba(128, 204, 255, .15);
+}
+
+.margin-top-10{
+    margin-top: 10px;
+}
+
+.margin-left-10{
+    margin-left: 10px;
+}
+.pagebar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20px;
+}
+.pageinfo{
+    font-size: 0;
+}
+.pagebar p{
+    font-size: 18px;
+    line-height: 20px;
+    display: inline-block;
+}
+.pagebar .red{
+    padding: 0 5px;
+}
+
+.pagebar .pagination{
+    margin: 0;
+    font-size: 12px;
+}
+.pagebar .pagination a{
+    color: white;
+    padding: 2px 5px;
+    margin: 0 2px;
+    background-color: rgba(12, 29, 50, .9);
+}
+.pageitem{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageitem input{
+    background-color: transparent;
+    border: 1px solid #ccc;
+    width: 20px;
+}
+.red{
+    color: red;
+}
+
+#equ-info .modal-dialog,#ly-info .modal-dialog{
+    top:10%;
+    width: 940px;
+}
+#ly-info .row,.con_box .row,.tab-pane .row{
+    margin: 0;
+}
+.con_box h4{
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+.con_box h2{
+    padding: 5px;
+}
+.info_icon{
+    height:48px;
+    width: 48px;
+}
+
+.con_box .info_box{
+    width: 50%;
+    padding: 10px;
+}
+.lc{
+    width: 90%;
+    border-bottom: 5px solid lightblue;
+}
+.lc_num{
+    font-size: 20px;
+    width: 40px;
+}
+.lc_room{
+    width: calc(100% - 40px);
+}
+.room{
+    width: 25%;
+    padding: 0 10px;
+    text-align: center;
+    position: relative;
+}
+.room p{
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
+}
+.room h6{
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    left: calc(100% -80px);
+    top: 16px;
+    color: white;
+    font-weight: bold;
+}
+.room_img{
+    display: inline-block;
+    width: 80px;
+    height: 50px;
+}
+.room_icon{
+    height: 16px;
+    width: 16px;
+}
+.room_icon+p{
+    line-height: 16px;
+}
+
+.margin-left-5{
+    margin-left: 5px;
+}
+.margin-left-20{
+    margin-left: 20px;
+}
+.margin-bottom-5{
+    margin-bottom: 5px;
+}
+.margin-bottom-15{
+    margin-bottom: 15px;
+}
+.margin-top-5{
+    margin-top: 5px;
+}
+.margin-top-15{
+    margin-top: 15px;
+}
+.bg-box{
+    height: 40px;
+    background-color: rgba(242, 242, 242, 0.517647058823529);
+    display: flex;
+    align-items: center;
+}
+.hr{
+    width: 100%;
+    height: 1px;
+    border: 0.5px dashed lightgray;
+}
+
+

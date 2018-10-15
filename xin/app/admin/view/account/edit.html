@@ -1,0 +1,155 @@
+{% extends "empty.html" %}
+{% block style %}
+{{ stylesheet_link('css/plugins/jsTree/style.min.css') }}
+{{ stylesheet_link('css/floor_designer.css') }}
+<style>
+    label.error{position: absolute;right: 22px;top: 10px;font-size:11px}
+    .ibox{
+        height: 385px;
+        overflow: auto;
+    }
+    .box_footer{
+        bottom: -50px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    {% if isSaved %}
+    <script>
+        var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+        parent.layer.closeAll();
+        window.parent.operateTip('success','reload');
+    </script>
+    {% else %}
+    <div id="" class="">
+        <div class="wrapper dialog-f8">
+            <form class="form-horizontal" id="dataForm" action="" method="post" >
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content border-none">
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>用户名:</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" name="username" class="form-control"  minlength="2"  maxlength="20" required  {% if user['id'] %}disabled="disabled"{% endif %}
+                                            placeholder="请输入用户名" value="{{user['username']}}" />
+                                    </div>
+                                </div>
+                                <!-- 防止浏览器因记住密码 自动填充用户名密码 -->
+                                <input type="password" name="password1"  style="display:none"/>
+                                {%if user['id'] %}
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>旧密码:</label>
+                                    <div class="col-xs-10">
+                                        <input type="password" id="oldpassword" name="oldpassword" class="form-control" placeholder="请输入旧的密码" />
+                                    </div>
+                                    <div class="col-sm-4 col-xs-5 tip"></div>
+                                </div>
+                                {%endif%}
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>密码:</label>
+                                    <div class="col-xs-10">
+                                        <input type="password" id="password" name="password" class="form-control" {% if user[ 'id']%} placeholder="输入新密码，不修改则不填"
+                                            {% else %} placeholder="请输认密码" {% endif %} autocomplete="off"/>
+                                    </div>
+                                </div>
+
+                                {%- macro existsRole(roles,rid) %}
+                                    {% for item in roles %}
+                                        {% if item['id'] == rid %}
+                                            {% return true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% return false %}
+                                {%- endmacro %}
+
+
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>角色:</label>
+                                    <div class="col-xs-10">
+                                        <select data-placeholder="请选择角色" class="chosen-select" multiple style="width:350px;" name="roleid[]" class="{required:true, minlength:2}">
+                                            {%for role in roles%}
+                                            <option value="{{role['id']}}" {%if account['roles'] and existsRole(account['roles'],role['id']) %}selected{%endif%} {%if roleid == role['id'] %}selected{%endif%}>{{role['rolename']}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>电话:</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" id="mobile" name="mobile" class="form-control" placeholder="请输入联系电话" value="{{user['mobile']}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">* </span>邮箱:</label>
+                                    <div class="col-xs-10">
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="请输入联系邮箱" value="{{user['email']}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-2 help-block"><span class="red bolder">&nbsp;&nbsp;</span>状态:</label>
+                                    <div class="col-xs-10">
+                                        <div class="i-checks">
+                                            <label><input type="radio" class="i-checks" value="enable" name="status" {% if !account[ 'status'] or account['status']=='enable' %} checked="checked" {%endif%}><i></i>启用</label>
+                                            <label><input type="radio" class="i-checks" value="disable" name="status" {% if account['status']=='disable' %} checked="checked" {%endif%}><i></i>禁用</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_footer">
+                            <button class="footer-btn footer-btn0" type="submit">保存</button>
+                            <button class="footer-btn footer-btn1" type="button" onclick="parent.layer.closeAll()">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% endif %}
+{% endblock %}
+
+
+{% block header%}
+{{ stylesheet_link('css/plugins/chosen/bootstrap-chosen.css') }}
+{% endblock %}
+
+{% block script %}
+{{ javascript_include('js/plugins/chosen/chosen.jquery.min.js') }}
+{{ javascript_include('js/plugins/validate/jquery.validate.min.js')}}
+{{ javascript_include('js/plugins/validate/messages_zh.min.js')}}
+{{ javascript_include('js/jquery.validate.extend.js')}}
+{{ javascript_include('js/drag/js/drag.js')}}
+{{ javascript_include('js/drag/js/floor_designer.js')}}
+{{ javascript_include('js/plugins/jsTree/jstree.min.js') }}
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+    $('.chosen-select').chosen({width: "100%"});
+    $("#dataForm").validate({
+        rules: {
+            username: {required: true,minlength: 2,stringCheck:true},
+            {%if user['id'] %}
+            oldpassword: {
+                isNewPwd:true
+            },
+            {% endif %}
+            password: {
+                isNewPwd:true,
+                {%if user['id'] is empty %}
+                required: true,
+                {% endif %}
+            },
+            mobile: {required: true,isMobile: true},
+            email: {required: true,email: true},
+        }
+    });
+
+});
+</script>
+{% endblock%}

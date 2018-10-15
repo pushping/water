@@ -1,0 +1,158 @@
+{% extends "index.html" %} 
+{% block content %} 
+{% include 'partial/breadcrumb.html' %}
+
+<div class=" p-sm">
+    
+    <form class="form-horizontal" id="dataForm" action="" method="post">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1">基本</a></li>         
+                <li ><a data-toggle="tab" href="#tab-2">数据</a></li>       
+                <li ><a data-toggle="tab" href="#tab-3">图片</a></li>       
+                <li ><a data-toggle="tab" href="#tab-4">属性</a></li>     
+                <li ><a data-toggle="tab" href="#tab-5">特价</a></li>
+                <li class="pull-right">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>&nbsp;&nbsp;<span>保存</span></button>
+                    <button type="reset" class="btn btn-default"><i class="fa fa-mail-reply"></i>&nbsp;&nbsp;<span>重置</span></button>
+                </li>
+            </ul>
+            <div class="tab-content">            
+                <div id="tab-1" class="tab-pane active">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="parentid" class="col-xs-3 col-sm-2 control-label">上级栏目</label>
+                            <div  class="col-xs-9 col-sm-3 col-md-2">
+                                {%- macro outcat(cat,depth,pid) %}                                
+                                <option value="{{cat['id']}}" {% if cat['id']==pid %}selected{%endif%}>{{php_str_repeat('&nbsp;&nbsp;',depth)}} {{cat['title']}}</option>
+                                {%for cat in cat['childs']%}
+                                    {{outcat(cat,depth+1,pid)}}
+                                {%endfor%}
+                                {%- endmacro %}
+                                <select class="form-control" id="parentid" name="parentid">
+                                    <option value="0">一级分类</option>
+                                    {%for cat in catTree%}
+                                        {{outcat(cat,0,objData? objData['parentid']:parentid)}}
+                                    {%endfor%}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">分类标识</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text"  name="name" class="form-control" placeholder="分类标识，50个字符内"
+                                           value="{{objData['name']}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">标题</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text" id="title" name="title" class="form-control" placeholder="分类标题，50个字符内"
+                                           value="{{objData['title']}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-xs-3 col-sm-2 control-label">描述</label>
+                            <div  class="col-xs-9 col-sm-6 col-md-4">
+                                <textarea class="form-control"  id="description" name="description" rows="2" placeholder="简要描述,200个字符内">{{objData['description']}}</textarea>
+                            </div>
+                        </div>            
+                            {%if type!=2%}
+                            <div class="form-group">
+                                {%if type==0%}
+                                <label for="model_id" class="col-xs-3 col-sm-2 control-label">选择模型</label>
+                                <div class="col-xs-9  col-sm-3 col-md-2">
+                                    <select class="form-control" id="model_id" name="model_id">
+                                        {%for model in models%}
+                                        <option value="{{model['id']}}">{{model['title']}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                                {%endif%}
+                            </div>
+                            {%else%}
+                            <div class="form-group">
+                                <label for="title" class="col-xs-3 col-sm-2 control-label">链接</label>
+                                <div  class="col-xs-9 col-sm-4">
+                                    <input type="text" id="url" name="url" class="form-control" placeholder="分类标题，50个字符内" value="{{menu['url']}}"/>
+                                </div>
+                            </div>
+                            {%endif%}
+                            <div class="form-group">
+                                <label class="col-xs-3 col-sm-2 control-label">设置项</label>
+                                <div  class="col-xs-9 col-sm-4">
+                                    <div class="checkbox checkbox-primary checkbox-inline">
+                                        <input type="checkbox" id="isshownav" value="1" {% if objData['isshownav']%}checked="checked"{%endif%}>
+                                        <label for="isshow"> 是否在导航显示 </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="model_id" class="col-xs-3 col-sm-2 control-label">可见性</label>
+                            <div class="col-xs-9  col-sm-6 col-md-4">
+                                <select class="form-control" >
+                                    <option value="0">所有人可见</option>
+                                    <option value="1">不可见</option>
+                                    <option value="2">管理员可见</option>
+                                </select>
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">网页标题</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text"  class="form-control" placeholder="分类标题，50个字符内" value="{{objData['title']}}"/>
+                            </div>
+                        </div>                       
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">关键字</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <textarea class="form-control"  name="settings[meta_keywords]"  rows="2" placeholder="关键字,200个字符内">{{objData['settings']['meta_keywords']}}</textarea>
+                            </div>
+                        </div>                      
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">描述</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <textarea class="form-control"  name="settings[meta_description]"   rows="2" placeholder="简要描述,200个字符内">{{objData['settings']['meta_description']}}</textarea>
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">频道模板</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text" name="settings[tpl_channel]" class="form-control" placeholder="使用默认请留空" value="{{objData['settings']['tpl_channel']}}"/>
+                            </div>
+                        </div>                         
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">列表模板</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text" name="settings[tpl_list]"  class="form-control" placeholder="使用默认请留空" value="{{objData['settings']['tpl_list']}}"/>
+                            </div>
+                        </div>                         
+                        <div class="form-group">
+                            <label for="title" class="col-xs-3 col-sm-2 control-label">详情模板</label>
+                            <div class="col-xs-9 col-sm-6 col-md-4">
+                                <input type="text" name="settings[tpl_detail]"  class="form-control" placeholder="使用默认请留空" value="{{objData['settings']['tpl_detail']}}"/>
+                            </div>
+                        </div>  
+                    </div>
+                </div>                          
+            </div>        
+        </div>
+
+    </form>
+</div>
+  
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+});
+</script>
+{% endblock %}

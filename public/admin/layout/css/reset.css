@@ -1,0 +1,82 @@
+/*common*/
+.main-content {padding: 20px!important}
+.basic-color {background-color:#108ee9!important}
+.header-height {height:64px;line-height: 64px}
+.flex-center {display: flex;justify-content: center;}
+.flex-between {display:flex;justify-content:space-between;}
+.my-btn {    display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;line-height: 1.428571429;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 4px;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;}
+.card-box {background: #fff;border-radius: 8px;font-size: 14px;position: relative;transition: all .2s ease-in-out;border-color: #e9eaec;}
+.card-box:hover {box-shadow: 0 5px 15px rgba(0,0,0,.35);cursor: pointer}
+.card-body {padding: 6px 10px;color:#fff;height: 100%}
+.card-footer {height: 24px;line-height: 24px;bottom: 0;font-size:12px;padding-left:26px}
+.mypinkness {background-color: rgb(247, 116, 121);}
+.myorg {background-color: rgb(255, 170, 102);}
+.mygreen {background-color:rgb(21, 210, 190)}
+.myblue {background-color: rgb(32, 135, 238)}
+.mypurple {background-color: rgb(126, 159, 204)}
+.white {background-color: rgb(255, 255, 255);color: rgba(0, 0, 0, 0.65);}
+
+/*nav-header top*/
+.navbar-top-list ul li {float:left;background-color:#108ee9!important;min-width:110px;cursor: pointer;color: hsla(0,0%,100%,.67)!important;}
+.navbar-top-list ul li a{background-color:#108ee9!important;height:64px;line-height: 64px;font-size:12px!important;transition:background-color 0.3s;color: hsla(0,0%,100%,.67)!important;}
+.navbar-top-list ul li a:hover{color:#fff!important}
+
+.owl-prev,.owl-next i{font-size:30px}
+.navbar-top-list ul .active {color: rgb(255, 255, 255)!important;background-color: rgb(55, 166, 255)!important;}
+.navbar-top-list ul .active a {color:#fff!important;background:rgb(55, 166, 255)!important;font-weight: 400!important}
+
+/*slide*/
+.nav-list>li>.active {color:#108ee9!important}
+.submenu>li>.active {color:#108ee9!important}
+.nav-list>li>a {background:#fff!important}
+.nav-list>li>a>i {font-size:13px!important;font-weight: 100}
+.nav-list>li a>.arrow {font-size:13px!important;font-weight: 100}
+.nav-list>li a:hover{color:#108ee9!important}
+/*content*/
+.card-body h5{font-size:18px;font-weight: 400}
+.card-body .card-content .title .val  {font-size:49px}
+.card-body .card-content i{font-size:52px;float:left;width:50%}
+.card-body .card-content .title {float:left}
+.card-body .card-content {padding-top:8px;padding-bottom: 3px ; text-align: center;}
+.card-device{width: 226px;margin-right: 24px;margin-bottom:10px;margin-top: 13px;height: 120px;}
+.page-content {background-color: #f4f4f4!important;padding:8px 38px 24px!important}
+.card-content .title{height: 60px;}
+.card-absolute {width: 100%;height: 28px;background-color: #000;padding: 0px;margin: 0px;left: 0;line-height: 28px;opacity: 0.1;bottom: 0;}
+
+.table table thead tr th {text-align: center}
+.table table tbody tr td {text-align: center}
+.table table tbody{min-height:700px;overflow: hidden;}
+.table table tbody .todo {background-position: 0 0;color:rgb(32, 135, 238);padding:0 15px;background-color: #fff;background-repeat: repeat-y;background-image: url('../images/layout_left.png');}
+.i-group i {margin:0 3px}
+
+
+.search-table {border-top:2px solid #108ee9}
+.table-buttom  {background-color:#fff;padding:1.2em 15px}
+.my-button {border-radius: 5px!important;border:1px solid #fff!important;font-size: 12px;color:#fff;border: 1px solid #ccc!important}
+.my-button:hover{opacity:.7;}
+.my-button-primary {background-color:#108ee9!important}
+.my-button-white {background-color:#fff!important;color:rgba(0, 0, 0, 0.65);}
+.my-button-disable {color: rgba(0, 0, 0, 0.25);background-color: #f7f7f7;border-color: #d9d9d9;}
+.my-button-disable:hover {opacity: 1;}
+
+/*tab*/
+.tab-content {border:0!important}
+.tabbable .nav-tabs {display:flex;justify-content: center}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {border-bottom:2px solid rgb(32, 135, 238);border-top: 0!important;box-shadow: none!important;border-bottom-color:rgb(32, 135, 238)!important;border-left:
+    none!important;border-top:none!important;border-right:none!important;}
+.nav-tabs>li>a {border-left:none!important;border-top:none!important;border-right:none!important;;background: #fff!important}
+/*layout-open*/
+
+/*menu*/
+.table .uthead {height:50px;font-size:12px;display:flex;align-items:center;background-color: #f7f7f7} 
+.table .dd{max-width:100%!important}
+.table .dd-handle, .dd2-content {margin:0!important;background:#fff!important;}
+
+.table .ubody {font-size:12px!important;background-color:#fff}
+
+
+.layout-top {padding:0px 50px;}
+.position-absolute {position: absolute;}
+.table_footer {position: absolute;bottom: 20px;left: 15px}
+.table_footer1 {position: absolute;bottom: 40px;left: 15px}
+.val-title {font-size: 16px}

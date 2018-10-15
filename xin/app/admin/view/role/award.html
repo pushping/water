@@ -1,0 +1,118 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<div class=" p-sm">    
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" id="objform" method="post" action=""> 
+            <div class="tabs-container tabs-with-footer">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1">菜单</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">动作</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane">
+                        <div class="panel-body">
+                            {%- macro buildTreeItem(list,depth) %}
+                            <ul class="tree-depth-{{depth}} clearfix">                        
+                                {% for v in list %}
+                                <li>
+                                    <div  class="checkbox">
+                                        <input name="access[]" type="checkbox" value="{{v['url']}}"/> <label>{{v['title']|default(v['url'])}}</label>
+                                    </div>
+                                    {% if v['childs'] %}
+                                    {{buildTreeItem(v['childs'],depth+1)}}
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {%- endmacro %}
+                            <div class="menuTree">
+                            {{buildTreeItem(arrayToTree(menus,0,0,0),1)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane active">
+                        <div class="panel-body">
+                            {% set m_exists=[]%} {% for k,v in privilegeList %} 
+                            {% if not php_in_array(v['m'],m_exists) %}
+                            <?php  $m_exists[]=$v['m'] ;?>
+                            <div class="panel box">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" style="width:150px">{{ v['m']}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for _k,_v in privilegeList %}
+                                        {% if _v['c']!='*' and _v['a']=='*' and _v['m']==v['m'] %}
+                                        <tr>
+                                            <td>
+                                                <span class="checkbox checkbox-inline">
+                                                    <input name="access[]" type="checkbox" value="{{_v['accesskey']}}" />
+                                                    <label>{{ _v['title']|default(_v['c'])}}</label>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% for __k,__v in privilegeList %} 
+                                                {% if __v['a']!='*' and _v['c']==__v['c'] and v['m']==__v['m'] %}
+                                                <span class="checkbox checkbox-inline">
+                                                    <input name="access[]" type="checkbox" value="{{__v['accesskey']}}" />
+                                                    <label>{{ __v['title']|default(__v['c'])}}</label>
+                                                </span>
+                                                {% endif %} 
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        {% endif %} 
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% endif %} 
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-footer">
+                    <div class="p-sm text-right">
+                        <button class="btn btn-white" type="reset">取消</button>
+                        <button class="btn btn-primary" type="submit" name="dosubmit" value="submit">保存更改</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ javascript_include('js/plugins/jsTree/jstree.min.js')}}
+    {{ javascript_include('js/jquery.form.js') }}
+    <script>
+        var accessList={{acceessList|json_encode}};
+        $(document).ready(function () {            
+            $('#objform').ajaxForm({
+                dataType:'json',
+                success: function(res){
+                    console.log(res);
+                    if(res.status=='ok'){
+                        showBottomTip(res['message'], 'success'); 
+                    }else{
+                        showBottomTip(res['message'], 'error'); 
+                    }
+                }
+            });     
+        });
+    </script>
+{% endblock %}
+
+{% block header %}
+{{ stylesheet_link('css/plugins/treeview/bootstrap-treeview.css') }}
+<style>
+    .hr-line-dashed{margin:10px 0px;}
+</style>
+{% endblock %}

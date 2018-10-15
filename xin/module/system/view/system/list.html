@@ -1,0 +1,151 @@
+{% extends "index.html" %}
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+{% include 'partial/new_breadcrumb.html' %}
+<div class="col-sm-12">
+    <!--<div class="ibox float-e-margins">-->
+    <!--<div class="ibox float-e-margins">-->
+    <!--<a class="btn btn-primary" href="{{url('admin/polling/add')}}">新建巡检任务</a>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="ibox float-e-margins">
+        <div class="ibox-content radius-5">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <div id="search-div" class="col-sm-12">
+                            <form class="form-inline"  method="get">
+                            </form>
+                        </div>
+                        {% if objectlist %}
+                        <table  class="table table-hover">
+                            <thead>
+                            <tr>
+                                <!-- <th><input type="checkbox" class="i-checks"></th> -->
+                                <th>序号</th>
+                                <th>区域名称</th>
+                                <th>登录链接</th>
+                                <th>管理员</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in objectlist %}
+                            <tr>
+                                <!-- <td><input type="checkbox" class="i-checks"></td> -->
+                                <td>{{item['id']}}</td>
+                                <td>{{item['name']}}</td>
+                                <td>{{loginUrlPre~item['id']}}</td>
+                                <td>{{item['admin']}}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-white" title="编辑" onclick="editReg({{item['id']}})"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="btn btn-white" title="删除" onclick="delReg({{item['id']}})"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                            {% if pagination.pageCount()>0 %}
+                            <tfoot>
+                            <tr>
+                                <td colspan="100%">
+                                    {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+                                    <div class="pull-right m-t-md">
+                                        <a class="btn btn-primary" href="{{url('admin/system/index')}}">新建</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                            {% endif %}
+                        </table>
+                        {% else %}
+                        <div class="text-center">
+                            <br>
+                            暂无数据
+                            <br>
+                        </div>
+                        <div class="clearfix">
+                            <div class="pull-right m-t-md">
+                                <a class="btn btn-primary" href="{{url('admin/system/index')}}">新建</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+    function editReg(id) {
+        window.location.href = "{{u('admin/system/index')}}&id="+id;
+    }
+    function delReg(id) {
+        confirmTip("您是否确认要删除这个区域吗？",'删除操作',function(){
+            var lyl = layer.load(5);
+            $.ajax({
+                url:"{{u('admin/system/delete')}}",
+                data: {"id":id},
+                type:"POST",
+                dataType:"JSON",
+                success:function (res) {
+                    console.log(res);
+                    layer.closeAll();
+                    layer.msg(res.msg);
+                    if(res.code=="200"){
+                        window.location.reload(1);
+                    }
+                }
+            });
+        });
+    }
+    
+    function detailPolling(id){
+        layerDialog( '{{u("admin/system/index")}}&act=detail&id='+id , {
+            ok : function ( $document ) {
+                console.log($document)
+            },
+            cancel : function ( $document ) {
+
+            }
+        },{ title : '提示' });
+    }
+    function editPolling(id){
+        layerDialog( '{{u("admin/system/index")}}&act=edit&id='+id , {
+            ok : function ( $document ) {
+                console.log($document)
+            },
+            cancel : function ( $document ) {
+
+            }
+        },{ title : '提示' });
+    }
+
+    //搜索操作
+    $(document).on('click', '#search-btn', function(event) {
+        var name = $("#polling-name").val();
+        var org_id = $("#org_id").val();
+        var area_id = $("#area_id").val();
+        if(name == '' && org_id == 0 && area_id == 0){
+            // layer.msg('请至少选择一个搜索条件',{icon: 2});return;
+        }
+        var url = '{{u("admin/polling/list")}}';
+        var status = '{{status}}';
+        var menuid = '{{menuid}}';
+        if(status > 0) url += '&status='+status;
+        if(name) url += '&name='+name;
+        if(org_id != 0) url += '&org_id='+org_id;
+        if(area_id != 0) url += '&area_id='+area_id;
+        url += '&menuid='+menuid;
+        location.href = url;
+    });
+</script>
+{% endblock%}

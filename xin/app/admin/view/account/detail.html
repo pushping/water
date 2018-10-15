@@ -1,0 +1,82 @@
+{% extends "empty.html" %}
+
+{% block content %}
+    {% if isSaved %}
+    <script>
+        var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+        parent.layer.closeAll();
+        window.parent.operateTip('success','reload');
+
+    </script>
+    {% else %}
+    <div id="" class="">
+            <div class="wrapper dialog-f8">
+                <form class="form-horizontal" id="dataForm" action="" method="post">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content border-none">
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block"><span class="red bolder">* </span>用户名</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" name="username" class="form-control"  value="{{user['username']}}" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block"><span class="red bolder">* </span>电话</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" id="mobile" name="mobile" class="form-control" value="{{user['mobile']}}" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block"><span class="red bolder">* </span>邮箱</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" id="email" name="email" class="form-control" value="{{user['email']}}" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block"><span class="red bolder">&nbsp;&nbsp;</span>状态</label>
+                                        <div class="col-xs-10">
+                                            <div class="i-checks">
+                                                <label><input type="radio" value="enable" name="status" {% if !account[ 'status'] or account['status']=='enable' %} checked="checked" {%endif%} disabled ><i></i>启用</label>
+                                                <label><input type="radio" value="disable" name="status" {% if account['status']=='disable' %} checked="checked" {%endif%} disabled ><i></i>禁用</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block">最后登录IP</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" name="lastloginip" class="form-control" value="{{account['lastloginip']}}" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-2 help-block">最后登录时间</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" name="lastlogintime" class="form-control" value="{% if account['lastlogintime'] %}{{formartTime(account['lastlogintime'],'Y-m-d H:i:s')}}{% endif %}" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_footer">
+                            <button class="footer-btn footer-btn0" type="button" onclick="parent.layer.closeAll()">关闭</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %} 
+
+{% block script %} 
+{{ javascript_include('js/plugins/chosen/chosen.jquery.min.js') }}
+{{ javascript_include('js/plugins/validate/jquery.validate.min.js') }}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+});
+</script> 
+{% endblock%}

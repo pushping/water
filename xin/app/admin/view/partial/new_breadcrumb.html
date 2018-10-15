@@ -1,0 +1,16 @@
+{% if src_array %}
+<!--<div class="row wrapper border-bottom white-bg page-heading" id="breadcrumb" style="padding: 10px;margin: 0 0  15px ">-->
+    <!--<div class="col-lg-10">-->
+        <!--<ol class="breadcrumb">           -->
+            <!--<li><a href="{{url('admin/index/index')}}">主页</a></li>                    -->
+            <!--{% for menu in php_array_reverse(src_array) %}-->
+            <!--<li{% if loop.last %} class="active" style="color: #1ab394;" {% endif%}>-->
+                <!--<a href="{% if menu['url'] %}{{ url(menu['url'])}}{%else%}javascript:;{%endif%}">{{menu['title']}}</a>-->
+            <!--</li>-->
+            <!--{% endfor %}-->
+        <!--</ol>-->
+    <!--</div>-->
+    <!--<div class="col-lg-2">-->
+    <!--</div>-->
+<!--</div>-->
+{%endif%}

@@ -1,0 +1,209 @@
+{% set menuTree=acl.getMenuTree(false) %}
+<?php
+use Xin\App\Admin\Lib\Utils;
+$currentMenus='';
+$menuid = intval($_GET['menuid']);
+if($menuid<=0){
+    $url = $_GET['_url']?$_GET['_url']:$di->get('config')->defaultRouter;
+    $menuid = Utils::getMuenidByUrl($url);
+}
+if($menuid>0){
+    $data=Utils::getMenusData($menuid,$this->auth->getTicket());
+    if($data){
+        $currentMenus = $data[0];
+        $menuid_array = $data[1];
+        $src_array = $data[2];
+    }
+}else{
+    $menuid_array[] = $menuTree[0]['id'];
+    if($menuTree[0]['son']){
+        $menuid_array[] = $currentMenus[0]['id'];
+        $data=Utils::getMenusData($menuTree[0]['id'],$this->auth->getTicket());
+        if($data){
+            $currentMenus = $data[0];
+            $menuid_array = $data[1];
+            $src_array = $data[2];
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理平台</title>
+    {{ stylesheet_link('css/bootstrap.min.css') }}
+    {{ stylesheet_link('font-awesome/css/font-awesome.min.css') }}
+    {{ stylesheet_link('css/plugins/toastr/toastr.min.css') }}
+    {{ stylesheet_link('js/plugins/gritter/jquery.gritter.css') }}
+    {{ stylesheet_link('css/plugins/iCheck/custom.css') }}
+    {{ stylesheet_link('css/style.css') }}
+    {{ stylesheet_link('css/my-style.css') }}
+    {{ stylesheet_link('css/animate.css') }}
+    
+    <!--新样式-->
+    {% block header%}{% endblock %}
+    {% block css %}{% endblock%}
+    {% block style %}
+
+    {% endblock%}
+</head>
+<body>
+    <div id="wrapper">
+        <div class="">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <ul class="pull-left m-b-none m-l-n">
+                        {% for menu in menuTree %}
+                            <li class="header_li {% if php_in_array(menu['id'],menuid_array) %} active {%endif%}">
+                            <a  href="javascript:void(0);" onclick="
+                            {% if menu['link'] %}
+                                {% if menu['link']=='index.php?_url=admin/index/screenModule' %}
+                                    window.open('{{menu['link']}}')
+                                {% else %}
+                                    location.href='{{menu['link']}}&menuid={{menu['id']}}'
+                                {% endif %}
+                            {% else %}
+                                {% if menu['son'] %}
+                                    {% if menu['son'][0]['link'] %}
+                                        location.href='{{menu['son'][0]['link']}}&menuid={{menu['son'][0]['id']}}'
+                                    {% else %}
+                                        {% if menu['son'][0]['son'] AND menu['son'][0]['son'][0]['link'] %}
+                                            location.href='{{menu['son'][0]['son'][0]['link']}}&menuid={{menu['son'][0]['son'][0]['id']}}'
+                                        {% else %}
+                                            javascript:;
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    javascript:;
+                                {% endif %}
+                            {% endif %}
+                            ">
+                                {% if menu['settings']['icon'] %}
+                                    <i class="fa {{menu['settings']['icon']}}"></i>
+                                {% endif %}
+                                <span> {{menu['title']}} </span>
+                            </a>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <ul class="dropdown-menu dropdown-alerts" id="alarm-ul">
+                            <li id="show-all-alarm">
+                                <div class="text-center link-block">
+                                    <a href="{{u('admin/alarm/list',['type':'realtime'])}}">
+                                        <strong>查看全部告警</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user"></i>{{this.auth.getTicket()['username']}}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{u('admin/account/logout')}}&tag={{regionInfo['id']}}">
+                            <i class="fa fa-sign-out"></i>退出
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        {% if currentMenus %}
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="profile-element">
+                            <a class="navbar-minimalize minimalize-styl-2 " href="#"><i class="fa fa-bars"></i> </a>
+                        </div>
+                        <div class="logo-element">
+                            <a class="navbar-minimalize minimalize-styl-2" href="#"><i class="fa fa-bars"></i> </a>
+                        </div>
+                    </li>
+                    {{currentMenus}}
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        {% endif %}
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                     {% block content %}{% endblock%}
+                     </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    {{ javascript_include('js/jquery-2.1.1.js')}}
+    {{ javascript_include('js/jquery.cookie-1.4.1.min.js')}}
+    {{ javascript_include('js/bootstrap.min.js') }}
+
+    {{ javascript_include('js/plugins/metisMenu/jquery.metisMenu.js') }}
+    {{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js') }}
+
+    {{ javascript_include('js/plugins/jquery-ui/jquery-ui.min.js') }}
+    {{ javascript_include('js/plugins/toastr/toastr.min.js') }}
+    {{ javascript_include('js/plugins/iCheck/icheck.min.js') }}
+    {{ javascript_include('js/plugins/layer/layer.js') }}
+
+
+    {{ javascript_include('js/plugins/pace/pace.min.js')}}
+    {{ javascript_include('js/func.js')}}
+    {{ javascript_include('js/tool.js')}}
+    {{ javascript_include('js/getPageBar.js')}}
+    {{ javascript_include('js/show-tip.js')}}
+    {{ javascript_include('js/jquery.form.js')}}
+    {{ javascript_include('js/inspinia.js')}}
+
+    
+
+    <!--[if lte IE 8]>
+    <script src="{{ javascript_include('ice/js/excanvas.min.js')}}"></script>
+    <![endif]-->
+    {% block script %}{% endblock%}
+    {% block javascript %}{% endblock%}
+    <script>
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "progressBar": false,
+          "preventDuplicates": true,
+          "positionClass": "toast-bottom-right",
+          "onclick": null,
+          "showDuration": "400",
+          "hideDuration": "1000",
+          "timeOut": "7000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+        $(function() {
+            var active_li = $(".sidebar-collapse #side-menu li.active");
+            if(active_li.length > 0){
+                var li = active_li.eq(0);
+                var children_ul = li.children('ul');
+                if(children_ul.length > 0){
+                    var children_li = children_ul.eq(0).children('li.active');
+                    if(children_li.length == 0){
+                        children_ul.eq(0).children('li').eq(0).addClass('active');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>          

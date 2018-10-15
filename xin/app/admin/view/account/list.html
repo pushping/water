@@ -1,0 +1,242 @@
+{% extends "index.html" %}
+
+{% block header %}
+{% endblock%}
+{% block style %}
+<style>
+    td .label{display:inline-block; margin: 3px 0;}
+</style>
+{% endblock %}
+{% block content %}
+{% include 'partial/new_breadcrumb.html' %}
+<div class="col-sm-12">
+        <!--<div class="ibox float-e-margins">-->
+            <!--<form action="{{u('',['page':1,'roleid':roleid])}}" method="POST">-->
+                <!--<div class="ibox float-e-margins">-->
+                    <!--<button class="btn btn-primary" type="button" onclick="addAccount()">添加用户</button>-->
+
+                    <!--{% if objectlist %}-->
+                    <!--<a class="btn btn-primary btn-outline"  onclick="batchDel('{{u('admin/account/delete')}}',function(){location.reload();})">-->
+                    <!--<i class="fa fa-trash-o"></i>&nbsp;删除</a>-->
+                    <!--{% endif %}-->
+                    <!---->
+                    <!--<div class="input-group pull-right col-xs-3">-->
+                        <!--<input type="text" name="keyword" class="form-control  input-sm" placeholder="输入名称进行查找" value="{{keyword}}">-->
+                        <!--<span class="input-group-btn">-->
+                            <!--<button type="submit" class="btn btn-white  btn-sm">搜索</button>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+    <form action="{{u('',['page':1,'roleid':roleid])}}" method="POST">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content radius-5">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group col-xs-3 m-b-md">
+                            <input type="text" name="keyword" class="form-control " placeholder="输入名称进行查找" value="{{keyword}}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-white">搜索</button>
+                            </span>
+                        </div>
+                        <div class="table-responsive">
+                            {% if objectlist %}
+                            <table  class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" class="i-checks"></th>
+                                    <th>用户名</th>
+                                    <th style="width: 39%">用户组</th>
+                                    <th>注册时间</th>
+                                    <th>邮箱</th>
+                                    <th>联系号码</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in objectlist %}
+                                    <tr{%if user['disabled']%} class="disabled_tr" {% endif %}>
+                                        <td>{% if user['id'] != 1 %}<input type="checkbox" class="i-checks" value="{{user['id']}}">{% endif %}</td>
+                                        <td>{{user['username']}}{%if user['disabled']%} <span class="fa fa-lock"></span>{% endif %}</td>
+                                        <td>
+                                            {% if user['id'] != 1 %}
+                                                {% for rid in php_explode(',',user['roleids']) %}
+                                                <span class="label label-primary label-xs">{{rolelist[rid]['rolename']}}</span>
+                                                {% endfor %}
+                                            {% else %}
+                                                <span class="label label-danger label-xs">超级管理员</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{% if user['create_time'] %}{{date(user['create_time'],'Y-m-d H:i:s')}}{% endif %}</td>
+                                        <td>{{user['email']}}</td>
+                                        <td>{{user['mobile']}}</td>
+                                        <td>{%if user['status']=='enable' %}启用{%else%}禁用{%endif%}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-white" title="查看" onclick="detailAccount({{user['id']}})"><i class="fa fa-eye"></i></button>
+                                                {% if user['id'] != 1 %}
+                                                <button type="button" class="btn btn-white" title="编辑" onclick="editAccount({{user['id']}})"><i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-white" title="删除" onclick="deleteAccount({{user['id']}})"><i class="fa fa-trash"></i></button>
+                                                <!-- <a href="{{u('admin/privilege/awarduser',['id':user['id']])}}"  class="btn btn-white" title="权限"><i class="fa fa-gavel"></i>权限</a> -->
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                {% if pagination.pageCount()>0 %}
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="8">
+                                            {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+
+                                            <div class="pull-right m-t-md">
+                                                <button class="btn btn-primary" type="button" onclick="addAccount()">添加用户</button>
+
+                                                {% if objectlist %}
+                                                <a class="btn btn-primary btn-outline"  onclick="batchDel('{{u('admin/account/delete')}}',function(){location.reload();})">
+                                                    <i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                                {% endif %}
+                            </table>
+                            {% else %}
+                                暂无数据
+                            <table  class="table table-hover">
+                                <tfoot><tr><td>
+                                <div class="pull-right m-t-md">
+                                    <button class="btn btn-primary" type="button" onclick="addAccount()">添加用户</button>
+                                </div>
+                                </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    // 表格中 icheck 全选
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+    var lemp = 0;
+    var length = $('table tr > td:first-child input.i-checks').length;
+    $('table th input.i-checks').on('ifClicked' , function(event){
+        if(event.target.checked){
+            $(this).closest('table').find('tr > td:first-child input.i-checks')
+                .each(function(){
+                    $(this).iCheck('uncheck');
+                    lemp = 0;
+                });
+        }else {
+            $(this).closest('table').find('tr > td:first-child input.i-checks')
+                .each(function () {
+                    $(this).iCheck('check');
+                    lemp = length
+                });
+            }
+    });
+    $('table tr > td:first-child input.i-checks').on('ifClicked',function(event){
+        event.target.checked ? lemp-- : lemp++;
+        if(lemp == length){
+            $('table th input.i-checks').iCheck('check');
+        }else {
+            $('table th input.i-checks').iCheck('uncheck');
+        }
+    });
+    function addAccount(id){
+        var area = ['700px', '525px'];
+        var roleid = '{{roleid}}';
+        dialogSizeTip('{{u("admin/account/create")}}&roleid='+roleid,'新增用户', area, null);
+    }
+    function editAccount(id){
+        var area = ['700px', '525px'];
+        dialogSizeTip('{{u("admin/account/edit",["id":""])}}'+id,'编辑用户', area, null);
+    }
+	function detailAccount(id){
+        var area = ['700px', '490px'];
+        dialogSizeTip('{{u("admin/account/detail",["id":""])}}'+id,'查看人员信息', area, null);
+    }
+    function deleteAccount(id) {
+        confirmTip("您是否确认要删除这一个用户",'删除操作',function(){
+            $.ajax({
+                url: "{{u('admin/account/delete')}}",
+                type: 'post',
+                dataType: 'JSON',
+                data:{id:id},
+            })
+            .always(function(res) {
+                if (res.status == 'ok') {
+                    showTip(res.message[0],true,function(){location.reload();});
+                }else{
+                    var error_info = "删除失败";
+                    if(res.status == 'error'){
+                        error_info = res.message[0];
+                    }
+                    showTip(error_info,false);
+                }
+            });
+            layer.closeAll();
+        },function(){
+            layer.closeAll();
+        })
+    }
+    function batchDel(url,callback){
+        var o=$('input.i-checks');
+        if(o.length<=0) return '';
+        var ids=[];
+        o.each(function(){
+            if($(this).is(':checked')){
+                var v = $(this).attr('value');
+                if(v!=undefined && v!='' && v != 0){
+                    ids.push(v);
+                }
+            }
+        });
+        if(ids.length<1){
+            layer.alert('无选中数据',{icon: 2});
+            return;
+        }
+        ajaxDeleteData(url, {id:ids},callback);
+    }
+    function ajaxDeleteData(url, params,callback) {
+        confirmTip("数据删除将无法恢复，您确认要删除！",'删除操作',function(){
+            params['_format'] = 'json';
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'JSON',
+                data:params,
+            })
+            .always(function(res) {
+                if (res.status == 'ok') {
+                    showTip(res.message[0],true,callback);
+                }else{
+                    var error_info = "删除失败";
+                    if(res.status == 'error'){
+                        error_info = res.message[0];
+                    }
+                    showTip(error_info,false);
+                }
+            });
+            layer.closeAll();
+        },function(){
+            layer.closeAll();
+        })
+    }
+</script>
+{% endblock%}

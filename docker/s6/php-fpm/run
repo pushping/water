@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+set -o pipefail
+exec /usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.d/www.conf
