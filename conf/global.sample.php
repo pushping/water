@@ -5,16 +5,16 @@ return new \Phalcon\Config([
         'database' => [
             'default' => [
                 'adapter' => 'Mysql',
-                'host' => '127.0.0.1:3306',
-                'username' => 'root',
-                'password' => '123456',
-                'dbname' => 'iot_apms',
+                'host' => '',
+                'username' => '',
+                'password' => '',
+                'dbname' => '',
                 'charset' => 'utf8',
                 'prefix' => 'dc_',
             ],
         ],
-        'webtitle'=>'智慧校园汇总管理平台',
-        'website'=>'http://www.apms.com/',
+        'webtitle'=>'管理平台',
+        'website'=>'http://http://water.pushping.cn/',
         'visualUri' => 'index.php?_url=', //配合route的handle工作,如果采用重写，这里就设置基准目录就好.同时用于生成url
         'staticUri' => './admin/', //静态文件路径，可以是绝对地址或相对地址
         'defaultRouter' => 'admin/index/index',
