@@ -740,7 +740,12 @@ button.btn-primary.dim {
   background: #fff;
   padding: 40px;
 }
-
+.btn-primary{
+  background: #465f93;
+}
+.btn-primary:focus,.btn-primary:active,.btn-primary:hover{
+  background: #3f4f7e;
+}
 .text-center.table{
   th{
     text-align: center !important;
@@ -756,10 +761,11 @@ button.btn-primary.dim {
     text-align: center !important;
   }
   th{
-    background: #232F49 !important;
+    background: #465f93 !important;
     border: 1px solid #fff;
     color: #fff;
     padding: 10px !important;
+    font-weight: normal;
   }
 }
 

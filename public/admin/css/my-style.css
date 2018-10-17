@@ -590,6 +590,12 @@ button.dim.webuploader-pick, button.dim.btn-primary {
   background: #fff;
   padding: 40px; }
 
+.btn-primary, .webuploader-pick, button.btn-primary.dim {
+  background: #465f93; }
+
+.btn-primary:focus, .webuploader-pick:focus, button.btn-primary.dim:focus, .btn-primary:active, .webuploader-pick:active, button.btn-primary.dim:active, .btn-primary:hover, .webuploader-pick:hover, button.btn-primary.dim:hover {
+  background: #3f4f7e; }
+
 .text-center.table th {
   text-align: center !important; }
 
@@ -601,10 +607,11 @@ button.dim.webuploader-pick, button.dim.btn-primary {
     line-height: normal;
     text-align: center !important; }
   .table-default th {
-    background: #232F49 !important;
+    background: #465f93 !important;
     border: 1px solid #fff;
     color: #fff;
-    padding: 10px !important; }
+    padding: 10px !important;
+    font-weight: normal; }
 
 .pagination > li a, .table {
   font-size: 14px !important; }
