@@ -15,13 +15,13 @@
 </head>
 <style>
     .login-bg {
-        background: #93bbff url('{{bgurl}}') no-repeat;
+        background: #93bbff url('./admin/images/overview/bg1.png') no-repeat;
         background-size: 100%;
     }
 </style>
 <body class="login-bg">
-    <div class="login-side-title"><img src="./admin/images/index/logo-v2.png" style="height: 40px" alt="">{{ webtitle }}</div>
     <div id="wrapper">
+    <div class="login-side-title"><img src="./admin/images/index/logo-v2.png" style="height: 40px" alt="">{{ webtitle }}</div>
         <div class="login-box animated fadeInDown">
             <div class="login-title">
             </div>
@@ -110,6 +110,7 @@
                     });
 
             })
+			setTimeout(function(){jsa.reset()},100);
 
             function show_box(id) {
                 jQuery('.widget-box.visible').removeClass('visible');
