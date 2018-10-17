@@ -598,7 +598,8 @@ button.dim.webuploader-pick, button.dim.btn-primary {
   .table-default td, .table-default th {
     border-radius: 0 !important;
     padding: 5px 10px !important;
-    line-height: normal; }
+    line-height: normal;
+    text-align: center !important; }
   .table-default th {
     background: #232F49 !important;
     border: 1px solid #fff;

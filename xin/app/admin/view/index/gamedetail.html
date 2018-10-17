@@ -57,43 +57,53 @@
 
 {% endblock %}
 {% block content %}
-<h3>游戏数据</h3>
-<table class="table table-default">
-    <tr>
-        <th>游戏时间：{{game['createtime']}}</th>
-        <th>玩家数：{{pnum}}</th>
-        <th>平台收益：{{game['gain_point']}}</th>
-        <th>
-            <input type="button" onclick="expo({{id}})" class="btn btn-primary" value="导出到Excel">
-        </th>
-    </tr>
-</table>
-<table class="table tb1">
-    <thead>
-    <tr>
-        <th>用户ID</th>
-        <th>用户昵称</th>
-        <th>当局分数</th>
-        <th>平台分红</th>
-        <th>当局结算</th>
-        <th>查看玩家</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in detail%}
-    <tr>
-        <td>{{item['userid']}}</td>
-        <td>{{item['name']}}</td>
-        <td>{{item['real_point']}}</td>
-        <td>{{item['plat_point']}}</td>
-        <td>{{item['left_point']}}</td>
-        <td>
-            <a href="{{url('admin/player/detail',['id':item['userid']])}}">查看</a>
-        </td>
-    </tr>
-    {% endfor%}
-    </tbody>
-</table>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">游戏数据</h3>
+    </div>
+    <div class="panel-body">
+        <div class="clearfix mb">
+            <div class="pull-left">
+                游戏时间：<span class="text-danger">{{game['createtime']}}</span> &nbsp;&nbsp;
+                玩家数：<span class="text-danger">{{pnum}}</span>&nbsp;&nbsp;
+                平台收益：<span class="text-danger">{{game['gain_point']}}</span>
+            </div>
+            <div class="pull-right">
+                <button type="button" onclick="expo({{id}})" class="btn btn-primary" value="导出到Excel">导出到Excel</button>
+            </div>
+        </div>
+
+        <table class="table table-default">
+            <thead>
+            <tr>
+                <th>用户ID</th>
+                <th>用户昵称</th>
+                <th>当局分数</th>
+                <th>平台分红</th>
+                <th>当局结算</th>
+                <th>查看玩家</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in detail%}
+            <tr>
+                <td>{{item['userid']}}</td>
+                <td>{{item['name']}}</td>
+                <td>{{item['real_point']}}</td>
+                <td>{{item['plat_point']}}</td>
+                <td>{{item['left_point']}}</td>
+                <td>
+                    <a href="{{url('admin/player/detail',['id':item['userid']])}}" class="btn btn-primary btn-xs"><span class="fa fa-search"></span> 查看</a>
+                </td>
+            </tr>
+            {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 <script>
     function expo(id) {
         window.open("{{url('admin/index/expo',['id':''])}}"+id);
