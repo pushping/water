@@ -736,10 +736,29 @@ button.btn-primary.dim {
 .owl-nav:hover {
   cursor: pointer;
 }
+.wrapper, .wrapper-content{
+  background: #fff;
+  padding: 40px;
+}
 
-.table {
+.text-center.table{
+  th{
+    text-align: center !important;
+  }
+}
+
+.table-default {
+  width: 100%;
   td, th {
-    padding: 7px !important;;
+    border-radius:0 !important;
+    padding: 5px 10px !important;
+    line-height: normal;
+  }
+  th{
+    background: #232F49 !important;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 10px !important;
   }
 }
 

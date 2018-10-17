@@ -13,7 +13,6 @@
 <style type="text/css">
     .display {display:none}
     #wrapper .sidebar-collapse{display:none}
-    .wrapper,.wrapper-content {padding:0px!important;margin: 0px!important}
     #page-wrapper {margin-left:0px!important;padding:0px;min-height: auto!important;}
 
      #jstree1 {font-size: 11px}
@@ -59,7 +58,7 @@
 {% endblock %}
 {% block content %}
 <form  id="checkform">
-<table class="table">
+<table class="table table-default">
     <thead>
         <tr>
             <th>参数名</th>
@@ -79,7 +78,12 @@
         {% endfor %}
             <tr>
                 <td colspan="3" >
-                    <input type="button" style="float: right" class="btn btn-primary" onclick="checkform()" value="更新">
+                    <div class="pull-left ">
+
+                    </div>
+                    <div class="pull-right m-t-md">
+                        <button type="button" style="float: right" class="btn btn-primary" onclick="checkform()" value="更新">更新</button>
+                    </div>
                 </td>
             </tr>
     </tbody>

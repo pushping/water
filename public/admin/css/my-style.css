@@ -586,8 +586,24 @@ button.dim.webuploader-pick, button.dim.btn-primary {
 .owl-nav:hover {
   cursor: pointer; }
 
-.table td, .table th {
-  padding: 7px !important; }
+.wrapper, .wrapper-content {
+  background: #fff;
+  padding: 40px; }
+
+.text-center.table th {
+  text-align: center !important; }
+
+.table-default {
+  width: 100%; }
+  .table-default td, .table-default th {
+    border-radius: 0 !important;
+    padding: 5px 10px !important;
+    line-height: normal; }
+  .table-default th {
+    background: #232F49 !important;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 10px !important; }
 
 .pagination > li a, .table {
   font-size: 14px !important; }

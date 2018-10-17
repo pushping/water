@@ -13,7 +13,6 @@
 <style type="text/css">
     .display {display:none}
     #wrapper .sidebar-collapse{display:none}
-    .wrapper,.wrapper-content {padding:0px!important;margin: 0px!important}
     #page-wrapper {margin-left:0px!important;padding:0px;min-height: auto!important;}
 
      #jstree1 {font-size: 11px}
@@ -58,9 +57,8 @@
 
 {% endblock %}
 {% block content %}
-<h3>今日开局数：{{countGame}}</h3>
-<h3>今日平台抽水：{{sumGain}}</h3>
-<table class="table tb1">
+<div class="mb">今日开局数：<span class="text-danger">{{countGame}}</span> &nbsp;今日平台抽水：<span class="text-danger">{{sumGain}}</span></div>
+<table class="table table-default  text-center">
     <thead>
     <tr>
         <th>游戏ID</th>
@@ -72,7 +70,7 @@
     <tbody>
     {% for item in games%}
     <tr>
-        <td>{{item['id']}}</td>
+        <td style="width: 5%">{{item['id']}}</td>
         <td>{{item['createtime']}}</td>
         <td>{{item['gain_point']}}</td>
         <td>
@@ -83,8 +81,10 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="100%">
-            {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+        <td colspan="100%" class="text-left">
+            <div class="pull-left">
+                {{pagination.setAttrib('class','pagination-sm  no-margin').output()}}
+            </div>
             <div class="pull-right m-t-md">
                 <a class="btn btn-primary" href="{{url('admin/index/newgame')}}">新开一局</a>
             </div>
