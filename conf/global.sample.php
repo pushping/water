@@ -14,7 +14,7 @@ return new \Phalcon\Config([
             ],
         ],
         'webtitle'=>'管理平台',
-        'website'=>'http://http://water.pushping.cn/',
+        'website'=>'http://water.pushping.cn/',
         'visualUri' => 'index.php?_url=', //配合route的handle工作,如果采用重写，这里就设置基准目录就好.同时用于生成url
         'staticUri' => './admin/', //静态文件路径，可以是绝对地址或相对地址
         'defaultRouter' => 'admin/index/index',

@@ -79,7 +79,7 @@ class Pagination extends \Xin\Lib\UserCtrl
                 $url_format .= '&page=@PAGE@';
             }
             if (dirname($_SERVER['SCRIPT_NAME'])=='/') {
-                $url_format = substr($url_format,2);   
+                $url_format = substr($url_format,1);
             }
             $this->_params['urlFormat'] = $url_format;
         }
