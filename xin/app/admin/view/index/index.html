@@ -61,20 +61,20 @@
 <table class="table table-default  text-center">
     <thead>
     <tr>
-        <th>游戏ID</th>
+        <th  style="width: 10%">游戏ID</th>
         <th>游戏时间</th>
         <th>游戏分红</th>
-        <th>操作</th>
+        <th  style="width: 20%">操作</th>
     </tr>
     </thead>
     <tbody>
     {% for item in games%}
     <tr>
-        <td style="width: 5%">{{item['id']}}</td>
+        <td>{{item['id']}}</td>
         <td>{{item['createtime']}}</td>
         <td>{{item['gain_point']}}</td>
-        <td>
-            <a href="{{url('admin/index/gamedetail',['id':item['id']])}}">查看</a>
+        <td >
+            <a href="{{url('admin/index/gamedetail',['id':item['id']])}}" class="btn btn-primary btn-xs"> <span class="fa fa-search"></span> 查看</a>
         </td>
     </tr>
     {% endfor%}
