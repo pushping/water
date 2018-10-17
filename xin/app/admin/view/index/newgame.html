@@ -53,6 +53,9 @@
         margin-right :0!important;;
         margin-left: 0!important;
     }
+    .searchable-select-dropdown{
+        z-index: 999;
+    }
 </style>
 
 {% endblock %}
@@ -61,8 +64,7 @@
 <table class="table table-default">
     <thead>
     <tr>
-        <th>玩家id</th>
-        <th>玩家姓名</th>
+        <th>玩家</th>
         <th>本局分数</th>
         <th>平台抽水</th>
         <th>本局结余</th>
@@ -74,10 +76,12 @@
     <?php for($i=0;$i<$limit;$i++){ ?>
         <tr>
             <td>
-                <input type="text" name="id_{{i}}" id="id_{{i}}" class="form-control" onchange="showName(this.value,{{i}})">
-            </td>
-            <td>
-                <input type="text" name="name_{{i}}" id="name_{{i}}" placeholder="请先填写玩家ID" class="form-control" readonly>
+                <select id="id_{{i}}" name="id_{{i}}" data-id="{{i}}"  class="form-control selt">
+                    <option value="0">请选择</option>
+                    {% for p in players %}
+                        <option value="{{p['id']}}">{{p['name']}}（{{p['id']}}）</option>
+                    {% endfor %}
+                </select>
             </td>
             <td>
                 <input type="text" name="point_{{i}}" id="point_{{i}}" class="form-control" onblur="setPoint(this.value,{{i}})">
@@ -115,7 +119,6 @@
 
     function showName(id,tag) {
         var lyl = layer.load(5);
-        $("#name_"+tag).val("");
         $("#palyer_left_"+tag).val(0.00);
         $("#hd_palyer_left_"+tag).val(0.00);
         $.ajax({
@@ -126,7 +129,6 @@
             success:function (res) {
                 layer.close(lyl);
                 if(res.code == '200'){
-                    $("#name_"+tag).val(res.data);
                     $("#hd_palyer_left_"+tag).val(Number(res.point).toFixed(2));
                     var point = $("#left_"+tag).val();
                     $("#palyer_left_"+tag).val((Number(res.point) + Number(point)).toFixed(2));
@@ -168,10 +170,6 @@
                     return ;
                 }
 ;            }
-            if($("#name_"+i).val()==''){
-                layer.msg("第"+(Number(i)+1)+"行玩家信息请重新填写！");
-                return ;
-            }
             if($("#point_"+i).val()=='' || !/^(-)*(\d|\.)+$/.test($("#point_"+i).val())){
                 layer.msg("请输入正确的第"+(Number(i)+1)+"行玩家本局分数！");
                 return ;
@@ -211,5 +209,19 @@
 {{ javascript_include('js/vue.js')}}
 {{ javascript_include('js/index_map.js')}}
 {{ javascript_include('js/plugins/slimscroll/jquery.slimscroll.min.js')}}
+{{ stylesheet_link('js/searchableselect/jquery.searchableSelect.css') }}
+{{ javascript_include('js/searchableselect/jquery-1.11.1.min.js')}}
+{{ javascript_include('js/searchableselect/jquery.searchableSelect.js')}}
+<script>
+    $(".selt").each(function () {
+        var th = $(this).searchableSelect({
+            afterSelectItem: function(){
+                if(this.holder.data("value")){
+                    showName(this.holder.data("value"),th.data('id'));
+                }
+            }
+        })
+    });
+</script>
 
 {% endblock%}

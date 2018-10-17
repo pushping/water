@@ -94,9 +94,9 @@ class IndexController extends basecontroller {
         $limit = $limitPlayer ? $limitPlayer->value : $this->defaultPlayers;
         $point = $base_point ? $base_point->value : $this->defaultPoint;
         $percent = $base_percent ? $base_percent->value : $this->defaultPercent;
-        $this->view->setVars(['limit'=>$limit]);
-        $this->view->setVars(['point'=>$point]);
-        $this->view->setVars(['percent'=>$percent]);
+        $players = Player::find("id>1")->toArray();
+
+        $this->view->setVars(['limit'=>$limit,'point'=>$point,'percent'=>$percent,'players'=>$players]);
 
     }
 
